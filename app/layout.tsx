@@ -3,6 +3,11 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { Providers } from './Redux/Provider'
 
+import '@fontsource/poppins'
+import '@fontsource/poppins/500.css';
+import '@fontsource/poppins/600.css';
+import '@fontsource/poppins/700.css';
+
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
