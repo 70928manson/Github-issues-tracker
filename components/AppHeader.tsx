@@ -1,29 +1,30 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Button, { SelectButton } from './Button';
-import styles from '../styles/modules/app.module.scss';
-import TodoModal from './TodoModal';
+import TodoModal from './TaskModal';
 import { updateFilterStatus } from '../Redux/slices/taskSlice';
+
+import type { RootState } from '../Redux/store';
 
 function AppHeader() {
   const [modalOpen, setModalOpen] = useState(false);
-  const initialFilterStatus = useSelector((state) => state.todo.filterStatus);
+  const initialFilterStatus = useSelector((state: RootState) => state.task.filterStatus);
   const [filterStatus, setFilterStatus] = useState(initialFilterStatus);
   const dispatch = useDispatch();
 
-  const updateFilter = (e) => {
+  const updateFilter = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFilterStatus(e.target.value);
     dispatch(updateFilterStatus(e.target.value));
   };
 
   return (
-    <div className={styles.appHeader}>
+    <div className="flex items-center justify-between h-[60px]">
       <Button variant="primary" onClick={() => setModalOpen(true)}>
         Add Task
       </Button>
       <SelectButton
         id="status"
-        onChange={(e) => updateFilter(e)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateFilter(e)}
         value={filterStatus}
       >
         <option value="all">All</option>

@@ -8,6 +8,13 @@ import { addTodo, updateTodo } from '../slices/todoSlice';
 import styles from '../styles/modules/modal.module.scss';
 import Button from './Button';
 
+interface ITaskModalProps {
+  type: string;
+  modalOpen: boolean;
+  setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  todo?: any; //TODO
+}
+
 const dropIn = {
   hidden: {
     opacity: 0,
@@ -29,7 +36,7 @@ const dropIn = {
   },
 };
 
-function TodoModal({ type, modalOpen, setModalOpen, todo }) {
+function TodoModal({ type, modalOpen, setModalOpen, todo }: ITaskModalProps) {
   const dispatch = useDispatch();
   const [title, setTitle] = useState('');
   const [status, setStatus] = useState('incomplete');
@@ -44,7 +51,7 @@ function TodoModal({ type, modalOpen, setModalOpen, todo }) {
     }
   }, [type, todo, modalOpen]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (title === '') {
       toast.error('Please enter a title');

@@ -14,13 +14,13 @@ const getInitialTodo = () => {
   return [];
 };
 
-export interface CounterState {
+export interface ITaskState {
     value: number;
     filterStatus: string;
     todoList: any[];  //TODO
 }
 
-const initialState: CounterState = {
+const initialState: ITaskState = {
     value: 0,
     filterStatus: 'all',
     todoList: getInitialTodo(),
@@ -45,6 +45,6 @@ export const taskSlice = createSlice({
     }
 })
 
-export const { increment, decrement, incrementByAmount } = taskSlice.actions;
+export const { increment, decrement, incrementByAmount, updateFilterStatus } = taskSlice.actions;
 
 export default taskSlice.reducer;

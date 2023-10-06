@@ -1,13 +1,20 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import styles from '../styles/modules/button.module.scss';
 import { getClasses } from '../utils/getClasses';
+
+interface IButtonProps {
+  type?: string;
+  variant: string;
+  children: ReactNode;
+  onClick?: () => void;
+}
 
 const buttonTypes = {
   primary: 'primary',
   secondary: 'secondary',
 };
 
-function Button({ type, variant = 'primary', children, ...rest }) {
+function Button({ type, variant = 'primary', children, ...rest }: IButtonProps) {
   return (
     <button
       type={type === 'submit' ? 'submit' : 'button'}
