@@ -4,7 +4,7 @@ import { MdOutlineClose } from 'react-icons/md';
 import { useDispatch } from 'react-redux';
 import { AnimatePresence, motion } from 'framer-motion';
 import toast from 'react-hot-toast';
-import { addTask, updateTask } from '../Redux/slices/taskSlice';
+import { ITask, addTask, updateTask } from '../Redux/slices/taskSlice';
 import styles from '../styles/modules/modal.module.scss';
 import Button from './Button';
 
@@ -12,7 +12,7 @@ interface ITaskModalProps {
   type: string;
   modalOpen: boolean;
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  todo?: any; //TODO
+  todo: ITask;
 }
 
 const dropIn = {
@@ -60,7 +60,7 @@ function TodoModal({ type, modalOpen, setModalOpen, todo }: ITaskModalProps) {
     if (title && status) {
       if (type === 'add') {
         dispatch(
-          addTodo({
+          addTask({
             id: uuid(),
             title,
             status,
@@ -71,7 +71,7 @@ function TodoModal({ type, modalOpen, setModalOpen, todo }: ITaskModalProps) {
       }
       if (type === 'update') {
         if (todo.title !== title || todo.status !== status) {
-          dispatch(updateTodo({ ...todo, title, status }));
+          dispatch(updateTask({ ...todo, title, status }));
           toast.success('Task Updated successfully');
         } else {
           toast.error('No changes made');

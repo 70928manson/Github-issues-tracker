@@ -14,10 +14,17 @@ const getInitialTodo = () => {
   return [];
 };
 
+export interface ITask {
+    id: string;
+    title: string;
+    status: string;
+    time: string;
+}
+
 export interface ITaskState {
     value: number;
     filterStatus: string;
-    todoList: any[];  //TODO
+    todoList: ITask[];
 }
 
 const initialState: ITaskState = {
@@ -30,6 +37,40 @@ export const taskSlice = createSlice({
     name: 'task',
     initialState,
     reducers: {
+        addTask: (state, action) => {
+            state.todoList.push(action.payload);
+            const todoList = window.localStorage.getItem('todoList');
+            if (todoList) {
+                const todoListArr = JSON.parse(todoList);
+                todoListArr.push({
+                  ...action.payload,
+                });
+                window.localStorage.setItem('todoList', JSON.stringify(todoListArr));
+            } else {
+                window.localStorage.setItem(
+                  'todoList',
+                  JSON.stringify([
+                    {
+                      ...action.payload,
+                    },
+                  ])
+                );
+            }
+        },
+        updateTask: (state, action) => {
+            const todoList = window.localStorage.getItem('todoList');
+            if (todoList) {
+                const todoListArr = JSON.parse(todoList);
+                todoListArr.forEach((todo: ITask) => {  //TODO
+                if (todo.id === action.payload.id) {
+                    todo.status = action.payload.status;
+                    todo.title = action.payload.title;
+                }
+                });
+                window.localStorage.setItem('todoList', JSON.stringify(todoListArr));
+                state.todoList = [...todoListArr];
+            }
+        },
         increment: (state) => {
             state.value += 1;
         },
@@ -45,6 +86,6 @@ export const taskSlice = createSlice({
     }
 })
 
-export const { increment, decrement, incrementByAmount, updateFilterStatus } = taskSlice.actions;
+export const { addTask, updateTask, increment, decrement, incrementByAmount, updateFilterStatus } = taskSlice.actions;
 
 export default taskSlice.reducer;
