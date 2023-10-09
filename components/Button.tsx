@@ -1,6 +1,5 @@
 import React, { ReactNode } from 'react';
 import styles from '../styles/modules/button.module.scss';
-import { getClasses } from '../utils/getClasses';
 
 interface IButtonProps {
   type?: string;
@@ -9,19 +8,18 @@ interface IButtonProps {
   onClick?: () => void;
 }
 
-const buttonTypes = {
-  primary: 'primary',
-  secondary: 'secondary',
-};
+interface ISelectButtonProps {
+  children: ReactNode;
+  id: string;
+  onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  value?: string;
+}
 
 function Button({ type, variant = 'primary', children, ...rest }: IButtonProps) {
   return (
     <button
       type={type === 'submit' ? 'submit' : 'button'}
-      className={getClasses([
-        styles.button,
-        styles[`button--${buttonTypes[variant]}`],
-      ])}
+      className={`${styles.button} ${styles[`button--${variant}`]}`}
       {...rest}
     >
       {children}
@@ -29,11 +27,11 @@ function Button({ type, variant = 'primary', children, ...rest }: IButtonProps) 
   );
 }
 
-function SelectButton({ children, id, ...rest }) {
+function SelectButton({ children, id, ...rest }: ISelectButtonProps) {
   return (
     <select
       id={id}
-      className={getClasses([styles.button, styles.button__select])}
+      className={`${styles.button} ${styles.button__select}`}
       {...rest}
     >
       {children}

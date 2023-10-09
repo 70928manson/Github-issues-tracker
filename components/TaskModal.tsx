@@ -4,7 +4,7 @@ import { MdOutlineClose } from 'react-icons/md';
 import { useDispatch } from 'react-redux';
 import { AnimatePresence, motion } from 'framer-motion';
 import toast from 'react-hot-toast';
-import { addTodo, updateTodo } from '../slices/todoSlice';
+import { addTask, updateTask } from '../Redux/slices/taskSlice';
 import styles from '../styles/modules/modal.module.scss';
 import Button from './Button';
 

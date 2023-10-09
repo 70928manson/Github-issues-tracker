@@ -12,7 +12,7 @@ function AppHeader() {
   const [filterStatus, setFilterStatus] = useState(initialFilterStatus);
   const dispatch = useDispatch();
 
-  const updateFilter = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const updateFilter = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setFilterStatus(e.target.value);
     dispatch(updateFilterStatus(e.target.value));
   };
@@ -24,7 +24,7 @@ function AppHeader() {
       </Button>
       <SelectButton
         id="status"
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateFilter(e)}
+        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => updateFilter(e)}
         value={filterStatus}
       >
         <option value="all">All</option>
