@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Button, { SelectButton } from './Button';
-import TodoModal from './TaskModal';
+import TaskModal from './TaskModal';
 import { updateFilterStatus } from '../Redux/slices/taskSlice';
 
 import type { RootState } from '../Redux/store';
@@ -31,7 +31,7 @@ function AppHeader() {
         <option value="incomplete">Incomplete</option>
         <option value="complete">Completed</option>
       </SelectButton>
-      <TodoModal type="add" modalOpen={modalOpen} setModalOpen={setModalOpen} />
+      <TaskModal type="add" modalOpen={modalOpen} setModalOpen={setModalOpen} />
     </div>
   );
 }

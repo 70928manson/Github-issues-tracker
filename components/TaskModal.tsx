@@ -12,7 +12,7 @@ interface ITaskModalProps {
   type: string;
   modalOpen: boolean;
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  todo: ITask;
+  todo?: ITask;
 }
 
 const dropIn = {
@@ -70,12 +70,14 @@ function TodoModal({ type, modalOpen, setModalOpen, todo }: ITaskModalProps) {
         toast.success('Task added successfully');
       }
       if (type === 'update') {
-        if (todo.title !== title || todo.status !== status) {
-          dispatch(updateTask({ ...todo, title, status }));
-          toast.success('Task Updated successfully');
-        } else {
-          toast.error('No changes made');
-          return;
+        if (todo) {
+          if (todo.title !== title || todo.status !== status) {
+            dispatch(updateTask({ ...todo, title, status }));
+            toast.success('Task Updated successfully');
+          } else {
+            toast.error('No changes made');
+            return;
+          }
         }
       }
       setModalOpen(false);
