@@ -9,12 +9,24 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        "black": "var(--black)"
+        "primaryPurple": "var(--primaryPurple)",
+        "black-1": "var(--black-1)",
+        "black-2": "var(--black-2)",
+        "bg-1": "var(--bg-1)",
+        "bg-2": "var(--bg-2)",
+        "bg-3": "var(--bg-3)",
+        "gray-1": "var(--gray-1)",
+        "gray-2": "var(--gray-2)",
+        "black": "var(--black)",
+        "white": "var(--white)"
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+      },
+      opacity: {
+        '5': '.5',
       },
     },
   },
