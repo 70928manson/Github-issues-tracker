@@ -28,6 +28,12 @@ const config: Config = {
       opacity: {
         '5': '.5',
       },
+      spacing: {
+        '8rem': "0.8rem",
+      },
+      fontSize: {
+        '16rem': "1.6rem",
+      },
     },
   },
   plugins: [],

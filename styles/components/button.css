@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.button {
+    @apply inline-block h-auto py-8rem px-8 border-none rounded-md font-medium text-16rem no-underline uppercase cursor-pointer overflow-hidden
+}
+
+.button--primary {
+    @apply bg-primaryPurple text-white
+}
+
+.button--secondary {
+    @apply bg-bg-3 text-black-1
+}
+
+.button_select {
+    @apply text-black-2 p-4 border-none bg-bg-3 w-[150px] cursor-pointer
+}

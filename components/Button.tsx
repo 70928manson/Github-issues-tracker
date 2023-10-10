@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
-import styles from '../styles/modules/button.module.scss';
+
+import "../styles/components/button.css"
 
 interface IButtonProps {
   type?: string;
@@ -19,7 +20,7 @@ function Button({ type, variant = 'primary', children, ...rest }: IButtonProps) 
   return (
     <button
       type={type === 'submit' ? 'submit' : 'button'}
-      className={`${styles.button} ${styles[`button--${variant}`]}`}
+      className={`button button--${variant}`}
       {...rest}
     >
       {children}
@@ -31,7 +32,7 @@ function SelectButton({ children, id, ...rest }: ISelectButtonProps) {
   return (
     <select
       id={id}
-      className={`${styles.button} ${styles.button__select}`}
+      className={`button button_select`}
       {...rest}
     >
       {children}
