@@ -2,15 +2,15 @@
 
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-const getInitialTodo = () => {
+const getInitialTask = () => {
   // getting task list
-  const localTodoList = window.localStorage.getItem('todoList');
+  const localTaskList = window.localStorage.getItem('taskList');
   // if task list is not empty
-  if (localTodoList) {
-    return JSON.parse(localTodoList);
+  if (localTaskList) {
+    return JSON.parse(localTaskList);
   }
 
-  window.localStorage.setItem('todoList', JSON.stringify([]));
+  window.localStorage.setItem('taskList', JSON.stringify([]));
   return [];
 };
 
@@ -24,13 +24,13 @@ export interface ITask {
 export interface ITaskState {
     value: number;
     filterStatus: string;
-    todoList: ITask[];
+    taskList: ITask[];
 }
 
 const initialState: ITaskState = {
     value: 0,
     filterStatus: 'all',
-    todoList: getInitialTodo(),
+    taskList: getInitialTask(),
 }
 
 export const taskSlice = createSlice({
@@ -38,17 +38,17 @@ export const taskSlice = createSlice({
     initialState,
     reducers: {
         addTask: (state, action) => {
-            state.todoList.push(action.payload);
-            const todoList = window.localStorage.getItem('todoList');
-            if (todoList) {
-                const todoListArr = JSON.parse(todoList);
-                todoListArr.push({
+            state.taskList.push(action.payload);
+            const taskList = window.localStorage.getItem('taskList');
+            if (taskList) {
+                const taskListArr = JSON.parse(taskList);
+                taskListArr.push({
                   ...action.payload,
                 });
-                window.localStorage.setItem('todoList', JSON.stringify(todoListArr));
+                window.localStorage.setItem('taskList', JSON.stringify(taskListArr));
             } else {
                 window.localStorage.setItem(
-                  'todoList',
+                  'taskList',
                   JSON.stringify([
                     {
                       ...action.payload,
@@ -58,17 +58,17 @@ export const taskSlice = createSlice({
             }
         },
         updateTask: (state, action) => {
-            const todoList = window.localStorage.getItem('todoList');
-            if (todoList) {
-                const todoListArr = JSON.parse(todoList);
-                todoListArr.forEach((todo: ITask) => {  //TODO
-                if (todo.id === action.payload.id) {
-                    todo.status = action.payload.status;
-                    todo.title = action.payload.title;
+            const taskList = window.localStorage.getItem('taskList');
+            if (taskList) {
+                const taskListArr = JSON.parse(taskList);
+                taskListArr.forEach((task: ITask) => {  //TODO
+                if (task.id === action.payload.id) {
+                    task.status = action.payload.status;
+                    task.title = action.payload.title;
                 }
                 });
-                window.localStorage.setItem('todoList', JSON.stringify(todoListArr));
-                state.todoList = [...todoListArr];
+                window.localStorage.setItem('taskList', JSON.stringify(taskListArr));
+                state.taskList = [...taskListArr];
             }
         },
         increment: (state) => {

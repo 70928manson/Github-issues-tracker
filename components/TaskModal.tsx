@@ -13,7 +13,7 @@ interface ITaskModalProps {
   type: string;
   modalOpen: boolean;
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  todo?: ITask;
+  task?: ITask;
 }
 
 const dropIn = {
@@ -37,20 +37,20 @@ const dropIn = {
   },
 };
 
-function TodoModal({ type, modalOpen, setModalOpen, todo }: ITaskModalProps) {
+function TaskModal({ type, modalOpen, setModalOpen, task }: ITaskModalProps) {
   const dispatch = useDispatch();
   const [title, setTitle] = useState('');
   const [status, setStatus] = useState('incomplete');
 
   useEffect(() => {
-    if (type === 'update' && todo) {
-      setTitle(todo.title);
-      setStatus(todo.status);
+    if (type === 'update' && task) {
+      setTitle(task.title);
+      setStatus(task.status);
     } else {
       setTitle('');
       setStatus('incomplete');
     }
-  }, [type, todo, modalOpen]);
+  }, [type, task, modalOpen]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -71,9 +71,9 @@ function TodoModal({ type, modalOpen, setModalOpen, todo }: ITaskModalProps) {
         toast.success('Task added successfully');
       }
       if (type === 'update') {
-        if (todo) {
-          if (todo.title !== title || todo.status !== status) {
-            dispatch(updateTask({ ...todo, title, status }));
+        if (task) {
+          if (task.title !== title || task.status !== status) {
+            dispatch(updateTask({ ...task, title, status }));
             toast.success('Task Updated successfully');
           } else {
             toast.error('No changes made');
@@ -120,7 +120,8 @@ function TodoModal({ type, modalOpen, setModalOpen, todo }: ITaskModalProps) {
 
             <form className="w-full" onSubmit={(e) => handleSubmit(e)}>
               <h1 className="text-black-1 text-[2rem] font-semibold p-4 mb-8 uppercase">
-                {type === 'add' ? 'Add' : 'Update'} TODO
+                {type === 'add' ? 'Add' : 'Update'} TASK
+                {/* TODO */}
               </h1>
               <label htmlFor="title" className="text-[1.6rem] text-black-1">
                 Title
@@ -160,4 +161,4 @@ function TodoModal({ type, modalOpen, setModalOpen, todo }: ITaskModalProps) {
   );
 }
 
-export default TodoModal;
+export default TaskModal;
