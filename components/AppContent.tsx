@@ -5,6 +5,7 @@ import styles from '../styles/modules/app.module.scss';
 import TaskItem from './TaskItem';
 
 import type { RootState } from '../Redux/store';
+import { ITask } from '@/Redux/slices/taskSlice';
 
 const container = {
   hidden: { opacity: 1 },
@@ -26,12 +27,12 @@ const child = {
 
 function AppContent() {
   const taskList = useSelector((state: RootState) => state.task.taskList);
-  const filterStatus = useSelector((state) => state.todo.filterStatus);
+  const filterStatus = useSelector((state: RootState) => state.task.filterStatus);
 
-  const sortedTodoList = [...todoList];
-  sortedTodoList.sort((a, b) => new Date(b.time) - new Date(a.time));
+  const sortedTaskList = [...taskList];
+  sortedTaskList.sort((a: ITask, b: ITask) => new Date(b.time).getTime() - new Date(a.time).getTime());
 
-  const filteredTodoList = sortedTodoList.filter((item) => {
+  const filteredTaskList = sortedTaskList.filter((item) => {
     if (filterStatus === 'all') {
       return true;
     }
@@ -46,15 +47,13 @@ function AppContent() {
       animate="visible"
     >
       <AnimatePresence>
-        {filteredTodoList && filteredTodoList.length > 0 ? (
-          filteredTodoList.map((todo) => (
-            // <motion.div key={todo.id} variants={child}>
-            <TaskItem key={todo.id} todo={todo} />
-            // </motion.div>
+        {filteredTaskList && filteredTaskList.length > 0 ? (
+          filteredTaskList.map((task) => (
+            <TaskItem key={task.id} todo={task} />
           ))
         ) : (
           <motion.p variants={child} className={styles.emptyText}>
-            No Todos
+            No Tasks
           </motion.p>
         )}
       </AnimatePresence>
