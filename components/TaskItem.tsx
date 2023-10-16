@@ -16,28 +16,28 @@ const child = {
   },
 };
 
-function TaskItem({ todo }) {
+function TaskItem({ task }) {
   const dispatch = useDispatch();
   const [checked, setChecked] = useState(false);
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
 
   useEffect(() => {
-    if (todo.status === 'complete') {
+    if (task.status === 'complete') {
       setChecked(true);
     } else {
       setChecked(false);
     }
-  }, [todo.status]);
+  }, [task.status]);
 
   const handleCheck = () => {
     setChecked(!checked);
     dispatch(
-      updateTodo({ ...todo, status: checked ? 'incomplete' : 'complete' })
+      updateTodo({ ...task, status: checked ? 'incomplete' : 'complete' })
     );
   };
 
   const handleDelete = () => {
-    dispatch(deleteTodo(todo.id));
+    dispatch(deleteTodo(task.id));
     toast.success('Todo Deleted Successfully');
   };
 
