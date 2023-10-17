@@ -1,7 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import styles from '../styles/modules/app.module.scss';
 import TaskItem from './TaskItem';
 
 import type { RootState } from '../Redux/store';
@@ -41,7 +40,7 @@ function AppContent() {
 
   return (
     <motion.div
-      className={styles.content__wrapper}
+      className="bg-bg-2 p-8 rounded-xl md:p-6"
       variants={container}
       initial="hidden"
       animate="visible"
@@ -49,10 +48,10 @@ function AppContent() {
       <AnimatePresence>
         {filteredTaskList && filteredTaskList.length > 0 ? (
           filteredTaskList.map((task) => (
-            <TaskItem key={task.id} todo={task} />
+            <TaskItem key={task.id} task={task} />
           ))
         ) : (
-          <motion.p variants={child} className={styles.emptyText}>
+          <motion.p variants={child} className="text-[1.6rem] font-medium text-black-2 text-center mx-auto py-2 px-4 rounded-lg bg-gray-2">
             No Tasks
           </motion.p>
         )}
