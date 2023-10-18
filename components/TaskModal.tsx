@@ -121,7 +121,6 @@ function TaskModal({ type, modalOpen, setModalOpen, task }: ITaskModalProps) {
             <form className="w-full" onSubmit={(e) => handleSubmit(e)}>
               <h1 className="text-black-1 text-[2rem] font-semibold p-4 mb-8 uppercase">
                 {type === 'add' ? 'Add' : 'Update'} TASK
-                {/* TODO */}
               </h1>
               <label htmlFor="title" className="text-[1.6rem] text-black-1">
                 Title
