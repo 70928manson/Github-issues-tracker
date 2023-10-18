@@ -8,6 +8,14 @@ import { deleteTask, updateTask } from '../Redux/slices/taskSlice';
 import CheckButton from './CheckButton';
 import TaskModal from './TaskModal';
 
+import { ITask } from '../Redux/slices/taskSlice';
+
+import '../styles/components/taskItem.css';
+
+interface ITaskItemProps {
+  task: ITask;
+}
+
 const child = {
   hidden: { y: 20, opacity: 0 },
   visible: {
@@ -16,7 +24,7 @@ const child = {
   },
 };
 
-function TaskItem({ task }) {
+function TaskItem({ task }: ITaskItemProps) {
   const dispatch = useDispatch();
   const [checked, setChecked] = useState(false);
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
@@ -47,24 +55,26 @@ function TaskItem({ task }) {
 
   return (
     <>
-      <motion.div className={styles.item} variants={child}>
-        <div className={styles.todoDetails}>
+      <motion.div className="flex items-center justify-center p-4 bg-white mb-6 rounded last:mb-0" variants={child}>
+        <div className="flex items-center justify-start gap-4">
           <CheckButton checked={checked} handleCheck={handleCheck} />
-          <div className={styles.texts}>
+          <div className="flex flex-col overflow-hidden">
             <p
-              className={getClasses([
-                styles.todoText,
-                todo.status === 'complete' && styles['todoText--completed'],
-              ])}
+            //className={`button button--${variant}`}
+            className={`todoText ${task.status && 'todoText--completed' }`}
+              // className={getClasses([
+              //   styles.todoText,
+              //   task.status === 'complete' && styles['todoText--completed'],
+              // ])}
             >
-              {todo.title}
+              {task.title}
             </p>
-            <p className={styles.time}>
-              {format(new Date(todo.time), 'p, MM/dd/yyyy')}
+            <p className="block text-[1.2rem] font-light mt-[-0.2rem] text-black-2">
+              {format(new Date(task.time), 'p, MM/dd/yyyy')}
             </p>
           </div>
         </div>
-        <div className={styles.todoActions}>
+        <div className="flex items-center justift-center gap-4">
           <div
             className={styles.icon}
             onClick={() => handleDelete()}
@@ -89,7 +99,7 @@ function TaskItem({ task }) {
         type="update"
         modalOpen={updateModalOpen}
         setModalOpen={setUpdateModalOpen}
-        task={todo}
+        task={task}
       />
     </>
   );
