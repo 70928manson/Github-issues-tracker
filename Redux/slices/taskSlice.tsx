@@ -61,7 +61,7 @@ export const taskSlice = createSlice({
             const taskList = window.localStorage.getItem('taskList');
             if (taskList) {
                 const taskListArr = JSON.parse(taskList);
-                taskListArr.forEach((task: ITask) => {  //TODO
+                taskListArr.forEach((task: ITask) => {  
                 if (task.id === action.payload.id) {
                     task.status = action.payload.status;
                     task.title = action.payload.title;
