@@ -77,7 +77,7 @@ function TaskItem({ task }: ITaskItemProps) {
         <div className="flex items-center justift-center gap-4">
           <div
             className="text-[2rem] p-2 rounded bg-gray-1 text-black-2 flex items-center justify-center cursor-pointer 
-            transition duration-300 ease-in-out hover:bg-gray-2"
+            duration-300 ease-in-out hover:bg-gray-2"
             onClick={() => handleDelete()}
             onKeyDown={() => handleDelete()}
             tabIndex={0}
@@ -87,7 +87,7 @@ function TaskItem({ task }: ITaskItemProps) {
           </div>
           <div
             className="text-[2rem] p-2 rounded bg-gray-1 text-black-2 flex items-center justify-center cursor-pointer 
-            transition duration-300 ease-in-out hover:bg-gray-2"
+            duration-300 ease-in-out hover:bg-gray-2"
             onClick={() => handleUpdate()}
             onKeyDown={() => handleUpdate()}
             tabIndex={0}
