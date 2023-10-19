@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.todoText {
+    @apply break-all font-medium text-[1.4rem] text-black-2
+}
+
+.todoText--completed {
+    @apply line-through opacity-70
+}
