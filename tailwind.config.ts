@@ -18,7 +18,8 @@ const config: Config = {
         "gray-1": "var(--gray-1)",
         "gray-2": "var(--gray-2)",
         "black": "var(--black)",
-        "white": "var(--white)"
+        "white": "var(--white)",
+        "background-color": "var(--bg-1)",
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

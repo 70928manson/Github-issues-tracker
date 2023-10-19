@@ -105,7 +105,7 @@ function TaskModal({ type, modalOpen, setModalOpen, task }: ITaskModalProps) {
               className="absolute top[-10px] right-0 translate-y-[-100%] text-[2.5rem] p-2 
               rounded bg-gray-1 text-black-2 flex items-center 
               justify-center cursor-pointer z-[-1] hover:bg-[#e32525] hover:text-white
-              duration-[0.3s] ease-in"
+              duration-300 ease-in-out"
               onKeyDown={() => setModalOpen(false)}
               onClick={() => setModalOpen(false)}
               role="button"

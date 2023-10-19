@@ -24,7 +24,8 @@ function CheckButton({ checked, handleCheck }) {
   return (
     <motion.div
       animate={checked ? 'checked' : 'unchecked'}
-      className={styles.svgBox}
+      className="basis-[25px] shrink-0 h-[25px] rounded-sm flex items-center justify-center p-[5px] cursor-pointer 
+     duration-300 ease-in-out hover:bg-gray-2 "
       variants={boxVariants}
       onClick={() => handleCheck()}
     >
