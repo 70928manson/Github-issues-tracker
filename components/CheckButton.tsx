@@ -29,7 +29,7 @@ function CheckButton({ checked, handleCheck }) {
       onClick={() => handleCheck()}
     >
       <motion.svg
-        className={styles.svg}
+        className="w-full h-full stroke-white flex items-center justify-center"
         viewBox="0 0 53 38"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
