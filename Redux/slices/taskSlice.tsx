@@ -71,14 +71,21 @@ export const taskSlice = createSlice({
                 state.taskList = [...taskListArr];
             }
         },
-        increment: (state) => {
-            state.value += 1;
-        },
-        decrement: (state) => {
-            state.value -= 1;
-        },
         incrementByAmount: (state, action: PayloadAction<number>) => {
             state.value += action.payload;
+        },
+        deleteTask: (state, action) => {
+            const taskList = window.localStorage.getItem('taskList');
+            if (taskList) {
+                const todoListArr = JSON.parse(taskList);
+                todoListArr.forEach((task: ITask, index: number) => {
+                if (task.id === action.payload) {
+                    todoListArr.splice(index, 1);
+                }
+                });
+                window.localStorage.setItem('todoList', JSON.stringify(todoListArr));
+                state.taskList = todoListArr;
+            }
         },
         updateFilterStatus: (state, action) => {
             state.filterStatus = action.payload;
@@ -86,6 +93,6 @@ export const taskSlice = createSlice({
     }
 })
 
-export const { addTask, updateTask, increment, decrement, incrementByAmount, updateFilterStatus } = taskSlice.actions;
+export const { addTask, updateTask, deleteTask, incrementByAmount, updateFilterStatus } = taskSlice.actions;
 
 export default taskSlice.reducer;
