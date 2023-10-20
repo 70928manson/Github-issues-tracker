@@ -40,12 +40,12 @@ function TaskItem({ task }: ITaskItemProps) {
   const handleCheck = () => {
     setChecked(!checked);
     dispatch(
-      updateTodo({ ...task, status: checked ? 'incomplete' : 'complete' })
+      updateTask({ ...task, status: checked ? 'incomplete' : 'complete' })
     );
   };
 
   const handleDelete = () => {
-    dispatch(deleteTodo(task.id));
+    dispatch(deleteTask(task.id));
     toast.success('Todo Deleted Successfully');
   };
 
