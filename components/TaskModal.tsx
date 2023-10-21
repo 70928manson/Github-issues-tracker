@@ -65,7 +65,7 @@ function TaskModal({ type, modalOpen, setModalOpen, task }: ITaskModalProps) {
             id: uuid(),
             title,
             status,
-            time: new Date().toLocaleString(),
+            time: new Date(),
           })
         );
         toast.success('Task added successfully');
