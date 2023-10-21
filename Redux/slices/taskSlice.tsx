@@ -1,5 +1,3 @@
-'use-client';
-
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 const getInitialTask = () => {
@@ -77,14 +75,14 @@ export const taskSlice = createSlice({
         deleteTask: (state, action) => {
             const taskList = window.localStorage.getItem('taskList');
             if (taskList) {
-                const todoListArr = JSON.parse(taskList);
-                todoListArr.forEach((task: ITask, index: number) => {
+                const taskListArr = JSON.parse(taskList);
+                taskListArr.forEach((task: ITask, index: number) => {
                 if (task.id === action.payload) {
-                    todoListArr.splice(index, 1);
+                    taskListArr.splice(index, 1);
                 }
                 });
-                window.localStorage.setItem('todoList', JSON.stringify(todoListArr));
-                state.taskList = todoListArr;
+                window.localStorage.setItem('taskList', JSON.stringify(taskListArr));
+                state.taskList = taskListArr;
             }
         },
         updateFilterStatus: (state, action) => {
