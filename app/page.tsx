@@ -1,5 +1,7 @@
+import AppContent from '@/components/AppContent'
 import AppHeader from '@/components/AppHeader'
 import Image from 'next/image'
+import { Toaster } from 'react-hot-toast';
 
 export default function Home() {
   return (
@@ -9,7 +11,7 @@ export default function Home() {
       </h1>
       <div className="max-w-[750px] w-full mx-auto">
         <AppHeader />
-        {/* //TODO.... */}
+        <AppContent />
       </div>
     </main>
   )
