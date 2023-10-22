@@ -6,14 +6,21 @@ import { MdOutlineClose } from 'react-icons/md';
 import { useDispatch } from 'react-redux';
 import { AnimatePresence, motion } from 'framer-motion';
 import toast from 'react-hot-toast';
-import { ITask, addTask, updateTask } from '../Redux/slices/taskSlice';
+import { ITask, addTask, deleteTask, updateTask } from '../Redux/slices/taskSlice';
 import Button from './Button';
+
+interface IModalOpen {
+  add: boolean;
+  update: boolean;
+  delete: boolean;
+}
 
 interface ITaskModalProps {
   type: string;
-  modalOpen: boolean;
-  setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  modalOpen: IModalOpen;
+  setModalOpen: React.Dispatch<React.SetStateAction<IModalOpen>>;
   task?: ITask;
+  modalTitle: string;
 }
 
 const dropIn = {
@@ -37,13 +44,17 @@ const dropIn = {
   },
 };
 
-function TaskModal({ type, modalOpen, setModalOpen, task }: ITaskModalProps) {
+function TaskModal({ type, modalOpen, setModalOpen, task, modalTitle }: ITaskModalProps) {
   const dispatch = useDispatch();
   const [title, setTitle] = useState('');
   const [status, setStatus] = useState('incomplete');
 
   useEffect(() => {
-    if (type === 'update' && task) {
+    console.log("type", type);
+    console.log("modalOpen", modalOpen, "check", modalOpen[`${(type as "add" | "update")}`] === true);
+    
+    
+    if ((type === 'update' || type === 'delete') && task) {
       setTitle(task.title);
       setStatus(task.status);
     } else {
@@ -81,13 +92,24 @@ function TaskModal({ type, modalOpen, setModalOpen, task }: ITaskModalProps) {
           }
         }
       }
-      setModalOpen(false);
+      if (type === 'delete') {
+        if (task !== undefined) {
+          dispatch(deleteTask(task.id));
+          toast.success('Todo Deleted Successfully');
+        } else {
+          alert("刪除失敗");
+        }
+      }
+
+      let tempModalOpen = {...(modalOpen as IModalOpen)};
+      tempModalOpen[`${(type as "add" | "update" | "delete")}`] = false;
+      setModalOpen(tempModalOpen)
     }
   };
 
   return (
     <AnimatePresence>
-      {modalOpen && (
+      {modalOpen[`${(type as "add" | "update" | "delete")}`] === true && (
         <motion.div
           className="fixed top-0 left-0 w-full h-full bg-[rgba(0,0,0,0.5)] z-50 flex justify-center items-center"
           initial={{ opacity: 0 }}
@@ -106,8 +128,16 @@ function TaskModal({ type, modalOpen, setModalOpen, task }: ITaskModalProps) {
               rounded bg-gray-1 text-black-2 flex items-center 
               justify-center cursor-pointer z-[-1] hover:bg-[#e32525] hover:text-white
               duration-300 ease-in-out"
-              onKeyDown={() => setModalOpen(false)}
-              onClick={() => setModalOpen(false)}
+              onKeyDown={() => {
+                let tempModalOpen = {...(modalOpen as IModalOpen)};
+                tempModalOpen[`${(type as "update" | "delete")}`] = false;
+                 setModalOpen(tempModalOpen)
+              }}
+              onClick={() => {
+                let tempModalOpen = {...(modalOpen as IModalOpen)};
+                tempModalOpen[`${(type as "update" | "delete")}`] = false;
+                 setModalOpen(tempModalOpen)
+              }}
               role="button"
               tabIndex={0}
               // animation
@@ -120,7 +150,7 @@ function TaskModal({ type, modalOpen, setModalOpen, task }: ITaskModalProps) {
 
             <form className="w-full" onSubmit={(e) => handleSubmit(e)}>
               <h1 className="text-black-1 text-[2rem] font-semibold p-4 mb-8 uppercase">
-                {type === 'add' ? 'Add' : 'Update'} TASK
+                 {modalTitle}
               </h1>
               <label htmlFor="title" className="text-[1.6rem] text-black-1">
                 Title
@@ -130,6 +160,7 @@ function TaskModal({ type, modalOpen, setModalOpen, task }: ITaskModalProps) {
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   className="mt-2 mb-8 w-full p-4 border-none bg-white text-[1.6rem]"
+                  disabled={type === "delete" ? true : false}
                 />
               </label>
               <label htmlFor="type" className="text-[1.6rem] text-black-1">
@@ -139,16 +170,21 @@ function TaskModal({ type, modalOpen, setModalOpen, task }: ITaskModalProps) {
                   value={status}
                   onChange={(e) => setStatus(e.target.value)}
                   className="mt-2 mb-8 w-full p-4 border-none bg-white text-[1.6rem]"
+                  disabled={type === "delete" ? true : false}
                 >
                   <option value="incomplete">Incomplete</option>
                   <option value="complete">Completed</option>
                 </select>
               </label>
-              <div className="flex  justify-start items-center mt-8 gap-4">
+              <div className="flex justify-start items-center mt-8 gap-4">
                 <Button type="submit" variant="primary">
-                  {type === 'add' ? 'Add Task' : 'Update Task'}
+                  {modalTitle}
                 </Button>
-                <Button variant="secondary" onClick={() => setModalOpen(false)}>
+                <Button variant="secondary" onClick={() => {
+                let tempModalOpen = {...(modalOpen as IModalOpen)};
+                tempModalOpen[`${(type as "update" | "delete")}`] = false;
+                 setModalOpen(tempModalOpen)
+                }}>
                   Cancel
                 </Button>
               </div>

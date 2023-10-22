@@ -1,10 +1,12 @@
+"use client"
+
 import { format } from 'date-fns';
 import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
 import React, { useEffect, useState } from 'react';
 import { MdDelete, MdEdit } from 'react-icons/md';
 import { useDispatch } from 'react-redux';
-import { deleteTask, updateTask } from '../Redux/slices/taskSlice';
+import { updateTask } from '../Redux/slices/taskSlice';
 import CheckButton from './CheckButton';
 import TaskModal from './TaskModal';
 
@@ -27,7 +29,11 @@ const child = {
 function TaskItem({ task }: ITaskItemProps) {
   const dispatch = useDispatch();
   const [checked, setChecked] = useState(false);
-  const [updateModalOpen, setUpdateModalOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState({
+    add: false,
+    update: false,
+    delete: false,
+  })
 
   useEffect(() => {
     if (task.status === 'complete') {
@@ -45,23 +51,44 @@ function TaskItem({ task }: ITaskItemProps) {
   };
 
   const handleDelete = () => {
-    dispatch(deleteTask(task.id));
-    toast.success('Todo Deleted Successfully');
+    setModalOpen({
+      ...modalOpen, delete: true
+    })
   };
 
   const handleUpdate = () => {
-    setUpdateModalOpen(true);
+    setModalOpen({
+      ...modalOpen, update: true
+    })
   };
+
+  console.log("1 task time壞調", "解決 讚啦");
+  console.log("2 delete modal直接刪掉沒跑出來", "解決 讚啦");
+  console.log("2-1", "更新updateModal state方式");
+  
+  console.log("3 add task???  .button--primary css壞掉");
+  console.log("4 點勾勾沒有畫線");
+
+  console.log("5 type集中管理 ex taskModal和appHeader的 IModalOpen");
+  
+  
+  
+    console.log("task.status", task.status);
+    console.log("task.time", task.time);
+    console.log("new Date()", new Date());
+    console.log("new Date( task.time)", new Date(task.time));
+    
+    
 
   return (
     <>
-      <motion.div className="flex items-center justify-center p-4 bg-white mb-6 rounded last:mb-0" variants={child}>
+      <motion.div className="flex items-center justify-between p-4 bg-white mb-6 rounded last:mb-0" variants={child}>
         <div className="flex items-center justify-start gap-4">
           <CheckButton checked={checked} handleCheck={handleCheck} />
           <div className="flex flex-col overflow-hidden">
             <p
             //className={`button button--${variant}`}
-            className={`todoText ${task.status && 'todoText--completed' }`}
+            className={`todoText ${task.status === "completed" && 'todoText--completed' }`}
               // className={getClasses([
               //   styles.todoText,
               //   task.status === 'complete' && styles['todoText--completed'],
@@ -70,11 +97,12 @@ function TaskItem({ task }: ITaskItemProps) {
               {task.title}
             </p>
             <p className="block text-[1.2rem] font-light mt-[-0.2rem] text-black-2">
-              {format(new Date(task.time), 'p, MM/dd/yyyy')}
+              {/* { task.time !== undefined ?  format(new Date(task.time), 'p, MM/dd/yyyy') : format(new Date(), 'p, MM/dd/yyyy') } */}
+              { format(new Date(task.time), 'p, MM/dd/yyyy')}
             </p>
           </div>
         </div>
-        <div className="flex items-center justift-center gap-4">
+        <div className="flex items-center justify-center gap-4">
           <div
             className="text-[2rem] p-2 rounded bg-gray-1 text-black-2 flex items-center justify-center cursor-pointer 
             duration-300 ease-in-out hover:bg-gray-2"
@@ -99,9 +127,17 @@ function TaskItem({ task }: ITaskItemProps) {
       </motion.div>
       <TaskModal
         type="update"
-        modalOpen={updateModalOpen}
-        setModalOpen={setUpdateModalOpen}
+        modalOpen={modalOpen}
+        setModalOpen={setModalOpen}
         task={task}
+        modalTitle="Update Task"
+      />
+      <TaskModal
+        type="delete"
+        modalOpen={modalOpen}
+        setModalOpen={setModalOpen}
+        task={task}
+        modalTitle="Delete Task"
       />
     </>
   );

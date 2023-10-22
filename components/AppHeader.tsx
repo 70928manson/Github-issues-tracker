@@ -8,8 +8,18 @@ import { updateFilterStatus } from '../Redux/slices/taskSlice';
 
 import type { RootState } from '../Redux/store';
 
+interface IModalOpen {
+  add: boolean;
+  update: boolean;
+  delete: boolean;
+}
+
 function AppHeader() {
-  const [modalOpen, setModalOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState({
+    add: false,
+    update: false,
+    delete: false,
+  });
   const initialFilterStatus = useSelector((state: RootState) => state.task.filterStatus);
   const [filterStatus, setFilterStatus] = useState(initialFilterStatus);
   const dispatch = useDispatch();
@@ -21,7 +31,11 @@ function AppHeader() {
 
   return (
     <div className="flex items-center justify-between h-[60px]">
-      <Button variant="primary" onClick={() => setModalOpen(true)}>
+      <Button variant="primary" onClick={() =>{
+        setModalOpen({
+          ...modalOpen, add: true
+        })
+      }}>
         Add Task
       </Button>
       <SelectButton
@@ -33,7 +47,7 @@ function AppHeader() {
         <option value="incomplete">Incomplete</option>
         <option value="complete">Completed</option>
       </SelectButton>
-      <TaskModal type="add" modalOpen={modalOpen} setModalOpen={setModalOpen} />
+      <TaskModal type="add" modalOpen={modalOpen} setModalOpen={setModalOpen} modalTitle="Add Task" />
     </div>
   );
 }
