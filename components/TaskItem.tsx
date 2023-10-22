@@ -1,5 +1,3 @@
-"use client"
-
 import { format } from 'date-fns';
 import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
