@@ -60,21 +60,12 @@ function TaskItem({ task }: ITaskItemProps) {
     })
   };
 
-  console.log("1 task time壞調", "解決 讚啦");
-  console.log("2 delete modal直接刪掉沒跑出來", "解決 讚啦");
-  console.log("2-1", "更新updateModal state方式");
-  
-  console.log("3 add task???  .button--primary css壞掉");
-  console.log("4 點勾勾沒有畫線");
 
-  console.log("5 type集中管理 ex taskModal和appHeader的 IModalOpen");
+  console.log("1", "更新updateModal state方式");
   
-  
-  
-    console.log("task.status", task.status);
-    console.log("task.time", task.time);
-    console.log("new Date()", new Date());
-    console.log("new Date( task.time)", new Date(task.time));
+  console.log("2 點勾勾沒有畫線");
+
+  console.log("3 type集中管理 ex taskModal和appHeader的 IModalOpen")
     
     
 
@@ -86,7 +77,7 @@ function TaskItem({ task }: ITaskItemProps) {
           <div className="flex flex-col overflow-hidden">
             <p
             //className={`button button--${variant}`}
-            className={`todoText ${task.status === "completed" && 'todoText--completed' }`}
+            className={`todoText ${task.status === "complete" && 'todoText--completed' }`}
               // className={getClasses([
               //   styles.todoText,
               //   task.status === 'complete' && styles['todoText--completed'],
