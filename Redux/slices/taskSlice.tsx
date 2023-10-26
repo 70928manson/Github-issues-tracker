@@ -1,4 +1,4 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 const getInitialTask = () => {
   // getting task list
@@ -69,9 +69,6 @@ export const taskSlice = createSlice({
                 state.taskList = [...taskListArr];
             }
         },
-        incrementByAmount: (state, action: PayloadAction<number>) => {
-            state.value += action.payload;
-        },
         deleteTask: (state, action) => {
             const taskList = window.localStorage.getItem('taskList');
             if (taskList) {
@@ -91,6 +88,6 @@ export const taskSlice = createSlice({
     }
 })
 
-export const { addTask, updateTask, deleteTask, incrementByAmount, updateFilterStatus } = taskSlice.actions;
+export const { addTask, updateTask, deleteTask, updateFilterStatus } = taskSlice.actions;
 
 export default taskSlice.reducer;
