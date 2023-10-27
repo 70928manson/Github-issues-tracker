@@ -60,13 +60,12 @@ function TaskItem({ task }: ITaskItemProps) {
     })
   };
 
+  console.log("2-1", "更新updateModal state方式");
 
-  console.log("1", "更新updateModal state方式");
+  console.log("斷了QQ")
+
+  console.log("5 type集中管理 ex taskModal和appHeader的 IModalOpen");
   
-  console.log("2 點勾勾沒有畫線");
-
-  console.log("3 type集中管理 ex taskModal和appHeader的 IModalOpen")
-    
     
 
   return (
