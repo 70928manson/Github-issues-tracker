@@ -3,11 +3,11 @@
 import React, { useEffect, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import { MdOutlineClose } from 'react-icons/md';
-import { useDispatch } from 'react-redux';
 import { AnimatePresence, motion } from 'framer-motion';
 import toast from 'react-hot-toast';
 import { ITask, addTask, deleteTask, updateTask } from '../Redux/slices/taskSlice';
 import Button from './Button';
+import { useAppDispatch } from '@/Redux/hooks';
 
 interface IModalOpen {
   add: boolean;
@@ -45,7 +45,7 @@ const dropIn = {
 };
 
 function TaskModal({ type, modalOpen, setModalOpen, task, modalTitle }: ITaskModalProps) {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [title, setTitle] = useState('');
   const [status, setStatus] = useState('incomplete');
 
@@ -95,7 +95,7 @@ function TaskModal({ type, modalOpen, setModalOpen, task, modalTitle }: ITaskMod
       if (type === 'delete') {
         if (task !== undefined) {
           dispatch(deleteTask(task.id));
-          toast.success('Todo Deleted Successfully');
+          toast.success('Task Deleted Successfully');
         } else {
           alert("刪除失敗");
         }

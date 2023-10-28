@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
 import React, { useEffect, useState } from 'react';
 import { MdDelete, MdEdit } from 'react-icons/md';
-import { useDispatch } from 'react-redux';
 import { updateTask } from '../Redux/slices/taskSlice';
 import CheckButton from './CheckButton';
 import TaskModal from './TaskModal';
@@ -11,6 +10,7 @@ import TaskModal from './TaskModal';
 import { ITask } from '../Redux/slices/taskSlice';
 
 import '../styles/components/taskItem.css';
+import { useAppDispatch } from '@/Redux/hooks';
 
 interface ITaskItemProps {
   task: ITask;
@@ -25,7 +25,7 @@ const child = {
 };
 
 function TaskItem({ task }: ITaskItemProps) {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [checked, setChecked] = useState(false);
   const [modalOpen, setModalOpen] = useState({
     add: false,
@@ -52,6 +52,7 @@ function TaskItem({ task }: ITaskItemProps) {
     setModalOpen({
       ...modalOpen, delete: true
     })
+    toast.success('Task Deleted Successfully');
   };
 
   const handleUpdate = () => {
