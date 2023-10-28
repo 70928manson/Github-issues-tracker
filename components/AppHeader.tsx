@@ -1,12 +1,11 @@
 "use client"
 
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import Button, { SelectButton } from './Button';
 import TaskModal from './TaskModal';
 import { updateFilterStatus } from '../Redux/slices/taskSlice';
 
-import type { RootState } from '../Redux/store';
+import { useAppDispatch, useAppSelector } from '@/Redux/hooks';
 
 interface IModalOpen {
   add: boolean;
@@ -20,9 +19,9 @@ function AppHeader() {
     update: false,
     delete: false,
   });
-  const initialFilterStatus = useSelector((state: RootState) => state.task.filterStatus);
+  const initialFilterStatus = useAppSelector((state) => state.task.filterStatus);
   const [filterStatus, setFilterStatus] = useState(initialFilterStatus);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const updateFilter = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setFilterStatus(e.target.value);

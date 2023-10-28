@@ -2,11 +2,9 @@
 
 import { AnimatePresence, motion } from 'framer-motion';
 import React from 'react';
-import { useSelector } from 'react-redux';
 import TaskItem from './TaskItem';
-
-import type { RootState } from '../Redux/store';
 import { ITask } from '@/Redux/slices/taskSlice';
+import { useAppSelector } from '@/Redux/hooks';
 
 const container = {
   hidden: { opacity: 1 },
@@ -27,8 +25,8 @@ const child = {
 };
 
 function AppContent() {
-  const taskList = useSelector((state: RootState) => state.task.taskList);
-  const filterStatus = useSelector((state: RootState) => state.task.filterStatus);
+  const taskList = useAppSelector((state) => state.task.taskList);
+  const filterStatus = useAppSelector((state) => state.task.filterStatus);
 
   const sortedTaskList = [...taskList];
   sortedTaskList.sort((a: ITask, b: ITask) => new Date(b.time).getTime() - new Date(a.time).getTime());
