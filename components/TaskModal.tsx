@@ -50,10 +50,6 @@ function TaskModal({ type, modalOpen, setModalOpen, task, modalTitle }: ITaskMod
   const [status, setStatus] = useState('incomplete');
 
   useEffect(() => {
-    console.log("type", type);
-    console.log("modalOpen", modalOpen, "check", modalOpen[`${(type as "add" | "update")}`] === true);
-    
-    
     if ((type === 'update' || type === 'delete') && task) {
       setTitle(task.title);
       setStatus(task.status);
