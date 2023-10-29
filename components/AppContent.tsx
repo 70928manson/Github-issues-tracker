@@ -1,10 +1,10 @@
 "use client"
 
 import { AnimatePresence, motion } from 'framer-motion';
-import React from 'react';
+import React, { useEffect } from 'react';
 import TaskItem from './TaskItem';
-import { ITask } from '@/Redux/slices/taskSlice';
-import { useAppSelector } from '@/Redux/hooks';
+import { ITask, localStorageInitTask } from '@/Redux/slices/taskSlice';
+import { useAppDispatch, useAppSelector } from '@/Redux/hooks';
 
 const container = {
   hidden: { opacity: 1 },
@@ -28,6 +28,8 @@ function AppContent() {
   const taskList = useAppSelector((state) => state.task.taskList);
   const filterStatus = useAppSelector((state) => state.task.filterStatus);
 
+  const dispatch = useAppDispatch();
+
   const sortedTaskList = [...taskList];
   sortedTaskList.sort((a: ITask, b: ITask) => new Date(b.time).getTime() - new Date(a.time).getTime());
 
@@ -37,6 +39,14 @@ function AppContent() {
     }
     return item.status === filterStatus;
   });
+
+  useEffect(() => {
+    const localTaskList = window.localStorage.getItem('taskList');
+    if (localTaskList) {
+      const a: ITask[] = JSON.parse(localTaskList);
+      dispatch(localStorageInitTask(a));
+    }
+  }, [dispatch])
 
   return (
     <motion.div
