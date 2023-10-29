@@ -61,14 +61,6 @@ function TaskItem({ task }: ITaskItemProps) {
     })
   };
 
-  console.log("2-1", "更新updateModal state方式");
-
-  console.log("斷了QQ")
-
-  console.log("5 type集中管理 ex taskModal和appHeader的 IModalOpen");
-  
-    
-
   return (
     <>
       <motion.div className="flex items-center justify-between p-4 bg-white mb-6 rounded last:mb-0" variants={child}>
@@ -76,17 +68,11 @@ function TaskItem({ task }: ITaskItemProps) {
           <CheckButton checked={checked} handleCheck={handleCheck} />
           <div className="flex flex-col overflow-hidden">
             <p
-            //className={`button button--${variant}`}
             className={`todoText ${task.status === "complete" && 'todoText--completed' }`}
-              // className={getClasses([
-              //   styles.todoText,
-              //   task.status === 'complete' && styles['todoText--completed'],
-              // ])}
             >
               {task.title}
             </p>
             <p className="block text-[1.2rem] font-light mt-[-0.2rem] text-black-2">
-              {/* { task.time !== undefined ?  format(new Date(task.time), 'p, MM/dd/yyyy') : format(new Date(), 'p, MM/dd/yyyy') } */}
               { format(new Date(task.time), 'p, MM/dd/yyyy')}
             </p>
           </div>
