@@ -8,7 +8,7 @@ type TaskData = {
 }
 
 export const taskApiService = createApi({
-  reducerPath: 'todoApi',
+  reducerPath: 'taskApi',
   baseQuery: fetchBaseQuery({ baseUrl: 'https://jsonplaceholder.typicode.com/' }),
   endpoints: (builder) => ({
     getTaskList: builder.query<TaskData, string>({
