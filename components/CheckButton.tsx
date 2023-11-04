@@ -22,7 +22,7 @@ const boxVariants = {
   unchecked: { background: 'var(--gray-2)', transition: { duration: 0.1 } },
 };
 
-function CheckButton({ checked, handleCheck }: ICheckButtonProps) {
+const CheckButton: React.FC<ICheckButtonProps> = ({ checked, handleCheck }) => {
   const pathLength = useMotionValue(0);
   const opacity = useTransform(pathLength, [0.05, 0.15], [0, 1]);
 

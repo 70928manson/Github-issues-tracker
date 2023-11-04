@@ -24,7 +24,7 @@ const child = {
   },
 };
 
-function AppContent() {
+const AppContent:React.FC = () => {
   const taskList = useAppSelector((state) => state.task.taskList);
   const filterStatus = useAppSelector((state) => state.task.filterStatus);
 

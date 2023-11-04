@@ -24,7 +24,7 @@ const child = {
   },
 };
 
-function TaskItem({ task }: ITaskItemProps) {
+const TaskItem: React.FC<ITaskItemProps> = ({ task }) => {
   const dispatch = useAppDispatch();
   const [checked, setChecked] = useState(false);
   const [modalOpen, setModalOpen] = useState({

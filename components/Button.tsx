@@ -16,7 +16,7 @@ interface ISelectButtonProps {
   value?: string;
 }
 
-function Button({ type, variant = 'primary', children, ...rest }: IButtonProps) {
+const Button: React.FC<IButtonProps> = ({ type, variant = 'primary', children, ...rest }) => {
   return (
     <button
       type={type === 'submit' ? 'submit' : 'button'}

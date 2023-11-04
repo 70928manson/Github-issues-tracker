@@ -13,7 +13,7 @@ interface IModalOpen {
   delete: boolean;
 }
 
-function AppHeader() {
+const AppHeader:React.FC = () => {
   const [modalOpen, setModalOpen] = useState({
     add: false,
     update: false,

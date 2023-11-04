@@ -44,7 +44,7 @@ const dropIn = {
   },
 };
 
-function TaskModal({ type, modalOpen, setModalOpen, task, modalTitle }: ITaskModalProps) {
+const TaskModal: React.FC<ITaskModalProps> = ({ type, modalOpen, setModalOpen, task, modalTitle }) => {
   const dispatch = useAppDispatch();
   const [title, setTitle] = useState('');
   const [status, setStatus] = useState('incomplete');
