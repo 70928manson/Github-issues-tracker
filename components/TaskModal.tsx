@@ -167,7 +167,7 @@ const TaskModal: React.FC<ITaskModalProps> = ({ type, modalOpen, setModalOpen, t
                   <option value="complete">Completed</option>
                 </select>
               </label>
-              <div className="flex justify-start items-center mt-8 gap-4">
+              <div className="flex justify-end items-center mt-8 gap-4">
                 <Button type="submit" variant="primary">
                   {modalTitle}
                 </Button>
