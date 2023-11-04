@@ -7,18 +7,14 @@ import { updateFilterStatus } from '../Redux/slices/taskSlice';
 
 import { useAppDispatch, useAppSelector } from '@/Redux/hooks';
 
-interface IModalOpen {
-  add: boolean;
-  update: boolean;
-  delete: boolean;
-}
+import { IModalOpen } from '@/types/components/taskModal';
 
 const AppHeader:React.FC = () => {
   const [modalOpen, setModalOpen] = useState({
     add: false,
     update: false,
     delete: false,
-  });
+  } as IModalOpen);
   const initialFilterStatus = useAppSelector((state) => state.task.filterStatus);
   const [filterStatus, setFilterStatus] = useState(initialFilterStatus);
   const dispatch = useAppDispatch();

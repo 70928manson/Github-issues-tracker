@@ -8,12 +8,7 @@ import toast from 'react-hot-toast';
 import { ITask, addTask, deleteTask, updateTask } from '../Redux/slices/taskSlice';
 import Button from './Button';
 import { useAppDispatch } from '@/Redux/hooks';
-
-interface IModalOpen {
-  add: boolean;
-  update: boolean;
-  delete: boolean;
-}
+import { IModalOpen } from '@/types/components/taskModal';
 
 interface ITaskModalProps {
   type: string;
@@ -97,7 +92,7 @@ const TaskModal: React.FC<ITaskModalProps> = ({ type, modalOpen, setModalOpen, t
         }
       }
 
-      let tempModalOpen = {...(modalOpen as IModalOpen)};
+      let tempModalOpen = {...(modalOpen)};
       tempModalOpen[`${(type as "add" | "update" | "delete")}`] = false;
       setModalOpen(tempModalOpen)
     }
@@ -125,12 +120,12 @@ const TaskModal: React.FC<ITaskModalProps> = ({ type, modalOpen, setModalOpen, t
               justify-center cursor-pointer z-[-1] hover:bg-[#e32525] hover:text-white
               duration-300 ease-in-out"
               onKeyDown={() => {
-                let tempModalOpen = {...(modalOpen as IModalOpen)};
+                let tempModalOpen = {...(modalOpen)};
                 tempModalOpen[`${(type as "update" | "delete")}`] = false;
                  setModalOpen(tempModalOpen)
               }}
               onClick={() => {
-                let tempModalOpen = {...(modalOpen as IModalOpen)};
+                let tempModalOpen = {...(modalOpen)};
                 tempModalOpen[`${(type as "update" | "delete")}`] = false;
                  setModalOpen(tempModalOpen)
               }}
@@ -177,7 +172,7 @@ const TaskModal: React.FC<ITaskModalProps> = ({ type, modalOpen, setModalOpen, t
                   {modalTitle}
                 </Button>
                 <Button variant="secondary" onClick={() => {
-                let tempModalOpen = {...(modalOpen as IModalOpen)};
+                let tempModalOpen = {...(modalOpen)};
                 tempModalOpen[`${(type as "update" | "delete")}`] = false;
                  setModalOpen(tempModalOpen)
                 }}>
