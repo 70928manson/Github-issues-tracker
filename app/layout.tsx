@@ -1,7 +1,8 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import { Poppins } from 'next/font/google'
-import { Providers } from '../Redux/Provider'
+import { ReduxProviders } from '../Redux/Provider'
+import { NextAuthProvider } from './nextAuthProviders'
 
 const poppins = Poppins({
   weight: ["400", "500", "600", "700", "800", "900"],
@@ -22,9 +23,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${poppins.className}`}>
-        <Providers>
-          {children}
-        </Providers>
+        <ReduxProviders>
+          <NextAuthProvider>
+            {children}
+          </NextAuthProvider>
+        </ReduxProviders>
       </body>
     </html>
   )
