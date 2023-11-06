@@ -17,3 +17,57 @@
 .button_select {
     @apply text-black-2 p-4 border-none bg-bg-3 w-[150px] cursor-pointer
 }
+
+.login-button {
+  width: auto;
+  display: inline-block;
+  padding: 0 18px 0 6px;
+  border: 0 none;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: all 250ms linear;
+}
+.login-button:hover {
+  text-decoration: none;
+}
+.login-button--social-login {
+  margin-bottom: 12px;
+  margin-right: 12px;
+  color: white;
+  height: 50px;
+  line-height: 46px;
+  position: relative;
+  text-align: left;
+}
+.login-button--social-login .icon {
+  margin-right: 12px;
+  font-size: 24px;
+  line-height: 24px;
+  width: 42px;
+  height: 24px;
+  text-align: center;
+  display: inline-block;
+  position: relative;
+  top: 4px;
+}
+.login-button--social-login .icon:before {
+  display: inline-block;
+  width: 40px;
+}
+.login-button--social-login .icon:after {
+  content: "";
+}
+
+.login-button--github {
+  background-color: #333;
+  border: 1px solid #1a1a1a;
+}
+.login-button--github .icon {
+  border-right: 1px solid #1a1a1a;
+}
+.login-button--github .icon:after {
+  border-right: 1px solid #4d4d4d;
+}
+.login-button--github:hover {
+  background-color: #262626;
+}
