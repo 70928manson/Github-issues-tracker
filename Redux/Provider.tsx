@@ -8,7 +8,7 @@ interface IChildren {
     children?: ReactNode
 }
 
-export function Providers({ children }: IChildren) {
+export function ReduxProviders({ children }: IChildren) {
     return (
         <Provider store={store}>
             {children}
