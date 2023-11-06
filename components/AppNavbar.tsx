@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Button from "./Button";
 import LoginModal from "./LoginModal";
 
-import { signUp } from 'next-auth/react';
+import { signOut } from 'next-auth/react';
 
 const AppNavbar: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -40,8 +40,8 @@ const AppNavbar: React.FC = () => {
             <Button type="login" variant="primary" onClick={handleLogin}>
               <span>Log In</span>
             </Button>
-            <Button type="login" variant="primary" onClick={handleLogin}>
-              <span>Sign Up</span>
+            <Button type="login" variant="primary" onClick={() => { signOut() }}>
+              <span>Sign Out</span>
             </Button>
           </div>
         </div>
