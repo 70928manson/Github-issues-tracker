@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { ReduxProviders } from '../../Redux/Provider';
-import { SessionProvider } from "next-auth/react";
+import { NextAuthProvider } from '../nextAuthProvider';
 
 type Props = {
     children?: React.ReactNode;
@@ -11,11 +11,11 @@ type Props = {
 export const Providers = ({ children }: Props) => {
     return (
         <>
-            <ReduxProviders>
-                <SessionProvider>
+            <NextAuthProvider>
+                <ReduxProviders>
                     {children}
-                </SessionProvider>
-            </ReduxProviders>
+                </ReduxProviders>
+            </NextAuthProvider>
         </>
     )
 }

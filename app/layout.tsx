@@ -24,11 +24,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${poppins.className}`}>
-        <ReduxProviders>
-          <NextAuthProvider>
-            {children}
-          </NextAuthProvider>
-        </ReduxProviders>
+        <Providers>
+          {children}
+        </Providers>
       </body>
     </html>
   )
