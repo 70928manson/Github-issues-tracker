@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Button from "./Button";
 import LoginModal from "./LoginModal";
 
-import { signOut } from 'next-auth/react';
+import { signIn, signOut, useSession } from 'next-auth/react';
 
 const AppNavbar: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -12,6 +12,12 @@ const AppNavbar: React.FC = () => {
   const handleLogin = () => {
     setModalOpen(true);
   };
+
+  //data重新命名為session
+  const { data: session } = useSession();
+
+  console.log("session", session);
+  
 
   return (
     <>
@@ -37,6 +43,7 @@ const AppNavbar: React.FC = () => {
             {/* <span className="ml-3 text-4xl">GIT</span> */}
           </a>
           <div className="flex gap-4">
+            <p onClick={() => signIn("github")}>yo</p>
             <Button type="login" variant="primary" onClick={handleLogin}>
               <span>Log In</span>
             </Button>
