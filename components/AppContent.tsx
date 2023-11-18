@@ -24,6 +24,8 @@ const child = {
   },
 };
 
+const apiUrl = "https://api.github.com";
+
 const AppContent:React.FC = () => {
   const taskList = useAppSelector((state) => state.task.taskList);
   const filterStatus = useAppSelector((state) => state.task.filterStatus);
@@ -39,6 +41,16 @@ const AppContent:React.FC = () => {
     }
     return item.status === filterStatus;
   });
+
+
+  useEffect(() => {
+    //https://www.letswrite.tw/github-api-issue-create-personal-token/
+    const fetchTask = async () => {
+      const res = await fetch(`${apiUrl}/search/issues`)
+    }
+    console.log("fetch issue ", fetchTask());
+    
+  }, [])
 
   useEffect(() => {
     const localTaskList = window.localStorage.getItem('taskList');
