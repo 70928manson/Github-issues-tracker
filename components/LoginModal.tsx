@@ -1,16 +1,9 @@
 "use client"
 
-import React, { useEffect, useState } from 'react';
-import { v4 as uuid } from 'uuid';
+import React from 'react';
 import { MdOutlineClose } from 'react-icons/md';
 import { AnimatePresence, motion } from 'framer-motion';
-import toast from 'react-hot-toast';
-import Button from './Button';
 
-import Image from 'next/image';
-import logo from '@/public/next.svg'
-
-import { AiFillGithub } from 'react-icons/ai'
 import LoginButton from './LoginButton';
 
 interface ITaskModalProps {
