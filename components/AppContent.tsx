@@ -46,7 +46,10 @@ const AppContent:React.FC = () => {
   useEffect(() => {
     //https://www.letswrite.tw/github-api-issue-create-personal-token/
     const fetchTask = async () => {
-      const res = await fetch(`${apiUrl}/search/issues`)
+      const res = await fetch(`${apiUrl}/search/issues`).then((res) => {
+        return res
+      })
+      return res
     }
     console.log("fetch issue ", fetchTask());
     
