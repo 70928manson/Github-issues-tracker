@@ -10,12 +10,21 @@ import Button from './Button';
 import { useAppDispatch } from '@/Redux/hooks';
 import { IModalOpen } from '@/types/components/taskModal';
 
+import { useSession } from 'next-auth/react';
+
 interface ITaskModalProps {
   type: string;
   modalOpen: IModalOpen;
   setModalOpen: React.Dispatch<React.SetStateAction<IModalOpen>>;
   task?: ITask;
   modalTitle: string;
+}
+
+type TTestConfig = {
+  method: string;
+  headers: Headers;
+  body: string;
+  redirect: string;
 }
 
 const dropIn = {
@@ -42,15 +51,18 @@ const dropIn = {
 const TaskModal: React.FC<ITaskModalProps> = ({ type, modalOpen, setModalOpen, task, modalTitle }) => {
   const dispatch = useAppDispatch();
   const [title, setTitle] = useState('');
-  const [status, setStatus] = useState('incomplete');
+  const [label, setLabel] = useState('incomplete');
+
+  //data重新命名為session
+  const { data: session, status } = useSession();
 
   useEffect(() => {
     if ((type === 'update' || type === 'delete') && task) {
       setTitle(task.title);
-      setStatus(task.status);
+      setLabel(task.status);
     } else {
       setTitle('');
-      setStatus('incomplete');
+      setLabel('incomplete');
     }
   }, [type, task, modalOpen]);
 
@@ -60,22 +72,47 @@ const TaskModal: React.FC<ITaskModalProps> = ({ type, modalOpen, setModalOpen, t
       toast.error('Please enter a title');
       return;
     }
-    if (title && status) {
+    if (title && label) {
       if (type === 'add') {
         dispatch(
           addTask({
             id: uuid(),
             title,
-            status,
+            label,
             time: new Date(),
           })
         );
+        const apiUri = `https://api.github.com/repos/70928manson/Github-issues-tracker/issues`;
+        const headers = new Headers();
+        headers.append("Accept", "application/vnd.github.v3+json");
+        if (status === "authenticated") {
+          headers.append("Authorization", `Bearer ${session?.access_token}`);
+        }
+        headers.append("Content-Type", "application/json");
+
+        let data = JSON.stringify({
+          "title": "測試建立Issue",
+          "body": "內文"
+        });
+
+        let config = {
+          method: 'POST',
+          headers: headers,
+          body: data,
+          //redirect: 'follow'
+        };
+
+        fetch(apiUri, config)
+          .then(res => res.json())
+          .then(result => console.log("123", result))
+          .catch(error => console.log('error', error));
+
         toast.success('Task added successfully');
       }
       if (type === 'update') {
         if (task) {
-          if (task.title !== title || task.status !== status) {
-            dispatch(updateTask({ ...task, title, status }));
+          if (task.title !== title || task.status !== label) {
+            dispatch(updateTask({ ...task, title, label }));
             toast.success('Task Updated successfully');
           } else {
             toast.error('No changes made');
@@ -155,11 +192,11 @@ const TaskModal: React.FC<ITaskModalProps> = ({ type, modalOpen, setModalOpen, t
                 />
               </label>
               <label htmlFor="type" className="text-[1.6rem] text-black-1">
-                Status
+                Label
                 <select
                   id="type"
-                  value={status}
-                  onChange={(e) => setStatus(e.target.value)}
+                  value={label}
+                  onChange={(e) => setLabel(e.target.value)}
                   className="mt-2 mb-8 w-full p-4 border-none bg-white text-[1.6rem]"
                   disabled={type === "delete" ? true : false}
                 >
