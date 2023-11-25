@@ -51,6 +51,7 @@ const dropIn = {
 const TaskModal: React.FC<ITaskModalProps> = ({ type, modalOpen, setModalOpen, task, modalTitle }) => {
   const dispatch = useAppDispatch();
   const [title, setTitle] = useState('');
+  const [taskBody, setTaskBody] = useState('');
   const [label, setLabel] = useState('incomplete');
 
   //data重新命名為session
@@ -91,8 +92,8 @@ const TaskModal: React.FC<ITaskModalProps> = ({ type, modalOpen, setModalOpen, t
         headers.append("Content-Type", "application/json");
 
         let data = JSON.stringify({
-          "title": "測試建立Issue",
-          "body": "內文"
+          "title": title,
+          "body": taskBody,
         });
 
         let config = {
@@ -129,7 +130,7 @@ const TaskModal: React.FC<ITaskModalProps> = ({ type, modalOpen, setModalOpen, t
         }
       }
 
-      let tempModalOpen = {...(modalOpen)};
+      let tempModalOpen = { ...(modalOpen) };
       tempModalOpen[`${(type as "add" | "update" | "delete")}`] = false;
       setModalOpen(tempModalOpen)
     }
@@ -157,14 +158,14 @@ const TaskModal: React.FC<ITaskModalProps> = ({ type, modalOpen, setModalOpen, t
               justify-center cursor-pointer z-[-1] hover:bg-[#e32525] hover:text-white
               duration-300 ease-in-out"
               onKeyDown={() => {
-                let tempModalOpen = {...(modalOpen)};
+                let tempModalOpen = { ...(modalOpen) };
                 tempModalOpen[`${(type as "update" | "delete")}`] = false;
-                 setModalOpen(tempModalOpen)
+                setModalOpen(tempModalOpen)
               }}
               onClick={() => {
-                let tempModalOpen = {...(modalOpen)};
+                let tempModalOpen = { ...(modalOpen) };
                 tempModalOpen[`${(type as "update" | "delete")}`] = false;
-                 setModalOpen(tempModalOpen)
+                setModalOpen(tempModalOpen)
               }}
               role="button"
               tabIndex={0}
@@ -178,7 +179,7 @@ const TaskModal: React.FC<ITaskModalProps> = ({ type, modalOpen, setModalOpen, t
 
             <form className="w-full" onSubmit={(e) => handleSubmit(e)}>
               <h1 className="text-black-1 text-[2rem] font-semibold p-4 mb-8 uppercase">
-                 {modalTitle}
+                {modalTitle}
               </h1>
               <label htmlFor="title" className="text-[1.6rem] text-black-1">
                 Title
@@ -187,6 +188,17 @@ const TaskModal: React.FC<ITaskModalProps> = ({ type, modalOpen, setModalOpen, t
                   id="title"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
+                  className="mt-2 mb-8 w-full p-4 border-none bg-white text-[1.6rem]"
+                  disabled={type === "delete" ? true : false}
+                />
+              </label>
+              <label htmlFor="title" className="text-[1.6rem] text-black-1">
+                Body
+                <textarea
+                  //type="text"
+                  id="body"
+                  value={taskBody}
+                  onChange={(e) => setTaskBody(e.target.value)}
                   className="mt-2 mb-8 w-full p-4 border-none bg-white text-[1.6rem]"
                   disabled={type === "delete" ? true : false}
                 />
@@ -209,9 +221,9 @@ const TaskModal: React.FC<ITaskModalProps> = ({ type, modalOpen, setModalOpen, t
                   {modalTitle}
                 </Button>
                 <Button variant="secondary" onClick={() => {
-                let tempModalOpen = {...(modalOpen)};
-                tempModalOpen[`${(type as "update" | "delete")}`] = false;
-                 setModalOpen(tempModalOpen)
+                  let tempModalOpen = { ...(modalOpen) };
+                  tempModalOpen[`${(type as "update" | "delete")}`] = false;
+                  setModalOpen(tempModalOpen)
                 }}>
                   Cancel
                 </Button>
