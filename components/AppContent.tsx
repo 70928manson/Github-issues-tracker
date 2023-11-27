@@ -5,6 +5,7 @@ import React, { useEffect } from 'react';
 import TaskItem from './TaskItem';
 import { ITask, localStorageInitTask } from '@/Redux/slices/taskSlice';
 import { useAppDispatch, useAppSelector } from '@/Redux/hooks';
+import { useGetTaskListQuery } from '@/Redux/services/taskApi';
 
 const container = {
   hidden: { opacity: 1 },
@@ -24,11 +25,12 @@ const child = {
   },
 };
 
-const apiUrl = "https://api.github.com";
-
 const AppContent:React.FC = () => {
   const taskList = useAppSelector((state) => state.task.taskList);
   const filterStatus = useAppSelector((state) => state.task.filterStatus);
+
+  const { data, isLoading } = useGetTaskListQuery("all");
+  console.log("data", data);
 
   const dispatch = useAppDispatch();
 
@@ -43,6 +45,8 @@ const AppContent:React.FC = () => {
   });
 
   useEffect(() => {
+    //這邊換成Github issue
+    //local task 88
     const localTaskList = window.localStorage.getItem('taskList');
     if (localTaskList) {
       const a: ITask[] = JSON.parse(localTaskList);

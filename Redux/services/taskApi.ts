@@ -9,11 +9,16 @@ type TaskData = {
 
 export const taskApiService = createApi({
   reducerPath: 'taskApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'https://jsonplaceholder.typicode.com/' }),
+  baseQuery: fetchBaseQuery({ baseUrl: 'https://api.github.com/repos/70928manson/Github-issues-tracker' }),
   endpoints: (builder) => ({
-    getTaskList: builder.query<TaskData, string>({
-      query: (id) => `tasks/${id}`,
-    })
+    getTaskList: builder.query<any, number | "all">({  //task -> any
+      query: (id) => {
+        if (id !== "all") {
+          return `issues/${id}`
+        }
+        return `issues`;
+      },
+    }),
   }),
 })
 
