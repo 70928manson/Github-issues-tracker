@@ -25,16 +25,42 @@ const child = {
   },
 };
 
-const AppContent:React.FC = () => {
+const AppContent: React.FC = () => {
   const taskList = useAppSelector((state) => state.task.taskList);
   const filterStatus = useAppSelector((state) => state.task.filterStatus);
 
   const { data, isLoading } = useGetTaskListQuery("all");
   console.log("data", data);
+  console.log("taskList", taskList);
+
 
   const dispatch = useAppDispatch();
 
-  const sortedTaskList = [...taskList];
+  let handleData: any[] = [];
+
+  if (data !== undefined) {
+    handleData = data.map((d: any) => {
+      console.log("d", d);
+
+      // id: string;
+      // title: string;
+      // status: string;
+      // time: string;
+
+      return {
+        completed: false,
+        id: d.id,
+        title: `${d.title} (Github來的)`,
+        body: d.body,
+        time: "December 17, 2023 03:24:00",
+        status: ""
+      }
+    })
+
+  }
+
+  //handleData放到sortedTaskList
+  const sortedTaskList = [...taskList, ...handleData];
   sortedTaskList.sort((a: ITask, b: ITask) => new Date(b.time).getTime() - new Date(a.time).getTime());
 
   const filteredTaskList = sortedTaskList.filter((item) => {
