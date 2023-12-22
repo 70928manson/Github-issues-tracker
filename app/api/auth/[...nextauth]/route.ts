@@ -16,9 +16,8 @@ const handler = NextAuth({
   ],
   //神來了 https://stackoverflow.com/questions/69068495/how-to-get-the-provider-access-token-in-next-auth
   callbacks: {
-    async jwt({ token, account, user }) {      
+    async jwt({ token, account }) {      
       if (account) {
-        console.log("account 123", account);
         token = Object.assign({}, token, { access_token: account.access_token });
       }
       return token
@@ -26,7 +25,6 @@ const handler = NextAuth({
     async session({ session, token }) {
       if (session) {
         session = Object.assign({}, session, { access_token: token.access_token })
-        console.log("session 123", session);
       }
       return session
     }
