@@ -17,7 +17,7 @@ const LoginButton: React.FC<ILoginButtonProps> = ({ children }) => {
         <button
             className="login-button login-button--social-login login-button--github mx-auto cursor-pointer"
             onClick={(e) => {
-                e.preventDefault();  //!!!!!!!!!!!!!!!!超重要
+                e.preventDefault();
                 signIn("github");
             }}
         >
