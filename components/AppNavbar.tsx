@@ -16,6 +16,8 @@ const AppNavbar: React.FC = () => {
   //data重新命名為session
   const { data: session } = useSession();
 
+  console.log("test 123");
+  
   console.log("session test", session);
 
   return (
