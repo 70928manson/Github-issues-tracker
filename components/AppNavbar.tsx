@@ -17,6 +17,7 @@ const AppNavbar: React.FC = () => {
   const { data: session } = useSession();
 
   console.log("session", session);
+  console.log("test");
   
 
   return (
