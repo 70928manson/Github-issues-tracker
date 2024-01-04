@@ -1,10 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { taskApiService } from "../services/taskApi";
 
+//Temp
 export interface ITask {
-    id: string;
+    id: number;
     title: string;
-    status: string;
+    body: string;
     time: string;
+    created_at: string;
+    status: string;
+    state: string;
 }
 
 export interface ITaskState {
@@ -23,62 +28,41 @@ export const taskSlice = createSlice({
     name: 'task',
     initialState,
     reducers: {
-        localStorageInitTask: (state, action) => {
+        initTask: (state, action) => {
             state.taskList = action.payload;
         },
         addTask: (state, action) => {
             state.taskList.push(action.payload);
-            const taskList = window.localStorage.getItem('taskList');
-            if (taskList) {
-                const taskListArr = JSON.parse(taskList);
-                taskListArr.push({
-                  ...action.payload,
-                });
-                window.localStorage.setItem('taskList', JSON.stringify(taskListArr));
-            } else {
-                window.localStorage.setItem(
-                  'taskList',
-                  JSON.stringify([
-                    {
-                      ...action.payload,
-                    },
-                  ])
-                );
-            }
         },
         updateTask: (state, action) => {
-            const taskList = window.localStorage.getItem('taskList');
-            if (taskList) {
-                const taskListArr = JSON.parse(taskList);
-                taskListArr.forEach((task: ITask) => {  
+            state.taskList.forEach((task: ITask) => {
                 if (task.id === action.payload.id) {
                     task.status = action.payload.status;
                     task.title = action.payload.title;
                 }
-                });
-                window.localStorage.setItem('taskList', JSON.stringify(taskListArr));
-                state.taskList = [...taskListArr];
-            }
+            });
         },
         deleteTask: (state, action) => {
-            const taskList = window.localStorage.getItem('taskList');
-            if (taskList) {
-                const taskListArr = JSON.parse(taskList);
-                taskListArr.forEach((task: ITask, index: number) => {
+            state.taskList.forEach((task: ITask, index: number) => {
                 if (task.id === action.payload) {
-                    taskListArr.splice(index, 1);
+                    state.taskList.splice(index, 1);
                 }
-                });
-                window.localStorage.setItem('taskList', JSON.stringify(taskListArr));
-                state.taskList = taskListArr;
-            }
+            });
         },
         updateFilterStatus: (state, action) => {
             state.filterStatus = action.payload;
         },
+    },
+    extraReducers: (builder) => {
+        builder.addMatcher(
+            taskApiService.endpoints.getTaskList.matchFulfilled,
+            (state, action) => {
+                state.taskList = action.payload;
+            }
+        );
     }
 })
 
-export const { localStorageInitTask, addTask, updateTask, deleteTask, updateFilterStatus } = taskSlice.actions;
+export const { initTask, addTask, updateTask, deleteTask, updateFilterStatus } = taskSlice.actions;
 
 export default taskSlice.reducer;
