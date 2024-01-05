@@ -11,6 +11,7 @@ import { IIssue } from '../Redux/slices/issueSlice';
 
 import '../styles/components/issueItem.css';
 import { useAppDispatch } from '@/Redux/hooks';
+import { useSession } from 'next-auth/react';
 
 interface IIssueItemProps {
   issue: IIssue;
@@ -31,7 +32,10 @@ const IssueItem: React.FC<IIssueItemProps> = ({ issue }) => {
     add: false,
     update: false,
     delete: false,
-  })
+  });
+
+  //data重新命名為session
+  const { data: session, status } = useSession();
 
   useEffect(() => {
     if (issue.status === 'Done') {
@@ -46,6 +50,32 @@ const IssueItem: React.FC<IIssueItemProps> = ({ issue }) => {
     dispatch(
       updateIssue({ ...issue, status: checked ? 'In Progress' : 'Done' })
     );
+
+    const apiUri = `https://api.github.com/repos/70928manson/Github-issues-tracker/issues/${issue.number}`;
+    const headers = new Headers();
+    headers.append("Accept", "application/vnd.github.v3+json");
+    if (status === "authenticated") {
+      headers.append("Authorization", `Bearer ${session?.access_token}`);
+    }
+    headers.append("Content-Type", "application/json");
+
+    let bodyData = JSON.stringify({
+      "labels": issue.status === "Done" ? ["In Progress"] : ["Done"]
+    });
+
+    let config = {
+      method: 'PATCH',
+      headers: headers,
+      body: bodyData,
+      //redirect: 'follow'
+    };
+
+    fetch(apiUri, config)
+      .then(res => res.json())
+      .then(result => console.log("result", result))
+      .catch(error => console.log('error', error));
+
+    toast.success('Issue update successfully');
   };
 
   const handleDelete = () => {
@@ -74,6 +104,9 @@ const IssueItem: React.FC<IIssueItemProps> = ({ issue }) => {
             </p>
             <div>
               <p className="block text-[1.5rem] font-light mt-[-0.2rem] text-black-2 pb-2">{`body: ${issue.body}`}</p>
+            </div>
+            <div>
+              <p className="block text-[1.5rem] font-light mt-[-0.2rem] text-black-2 pb-2">{`label to status: ${issue.status}`}</p>
             </div>
             <p className="block text-[1.2rem] font-light mt-[-0.2rem] text-black-2">
               { format(new Date(issue.time), 'p, MM/dd/yyyy') }

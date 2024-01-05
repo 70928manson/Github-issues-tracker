@@ -40,16 +40,15 @@ const AppContent: React.FC = () => {
         completed: false,
         id: issue.id,
         title: `${issue.title}`,
-        body: issue.body,
+        body: issue.body !== null ? issue.body : '',
         time: issue.created_at, //這邊要改時間
         created_at: issue.created_at,
-        status: issue.status,
+        status: issue.status ? issue.status : issue.labels && issue.labels[0] && issue.labels[0].name && issue.labels[0].name,
         state: issue.state,
         number: issue.number,
-        label: issue.label
+        labels: issue.labels
       }
     })
-
   }
 
   //時間 
