@@ -7,10 +7,11 @@ import { AnimatePresence, motion } from 'framer-motion';
 import toast from 'react-hot-toast';
 import { ITask, addTask, deleteTask, updateTask } from '../Redux/slices/taskSlice';
 import Button from './Button';
-import { useAppDispatch } from '@/Redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/Redux/hooks';
 import { IModalOpen } from '@/types/components/taskModal';
 
 import { useSession } from 'next-auth/react';
+import { useGetTaskListQuery } from '@/Redux/services/taskApi';
 
 interface ITaskModalProps {
   type: string;
@@ -52,20 +53,148 @@ const TaskModal: React.FC<ITaskModalProps> = ({ type, modalOpen, setModalOpen, t
   const dispatch = useAppDispatch();
   const [title, setTitle] = useState('');
   const [taskBody, setTaskBody] = useState('');
-  const [label, setLabel] = useState('incomplete');
+  const [label, setLabel] = useState('In Progress');
+
+  const taskList = useAppSelector((state) => state.task.taskList);
 
   //data重新命名為session
   const { data: session, status } = useSession();
-
+  
   useEffect(() => {
     if ((type === 'update' || type === 'delete') && task) {
       setTitle(task.title);
-      setLabel(task.status);
+      setTaskBody(task.body);
+      if (task.status === undefined) {
+        setLabel('In Progress')
+      } else {
+        setLabel(task.status);
+      }
     } else {
       setTitle('');
-      setLabel('incomplete');
+      setTaskBody('');
+      setLabel('In Progress');
     }
   }, [type, task, modalOpen]);
+
+  const handleAdd = () => {
+    dispatch(
+      addTask({
+        id: uuid(),
+        title,
+        body: taskBody,
+        label,
+        time: Date(),
+        created_at: Date(),
+        number: taskList.length + 1
+      })
+    );
+
+    const apiUri = `https://api.github.com/repos/70928manson/Github-issues-tracker/issues`;
+    const headers = new Headers();
+    headers.append("Accept", "application/vnd.github.v3+json");
+    if (status === "authenticated") {
+      headers.append("Authorization", `Bearer ${session?.access_token}`);
+    }
+    headers.append("Content-Type", "application/json");
+
+    let bodyData = JSON.stringify({
+      "title": title,
+      "body": taskBody,
+    });
+
+    let config = {
+      method: 'POST',
+      headers: headers,
+      body: bodyData,
+      //redirect: 'follow'
+    };
+
+    fetch(apiUri, config)
+      .then(res => res.json())
+      //.then(result => console.log("result", result))
+      .catch(error => console.log('error', error));
+
+    toast.success('Task added successfully');
+  }
+
+  const handleUpdate = () => {
+    if (task) {
+      if (task.title !== title || task.body !== taskBody || task.status !== label) {
+        dispatch(updateTask({ ...task, title, body: taskBody, label }));
+        //toast.success('Task Updated successfully');
+      } else {
+        toast.error('No changes made');
+        return;
+      }
+      const apiUri = `https://api.github.com/repos/70928manson/Github-issues-tracker/issues/${task.number}`;
+      const headers = new Headers();
+      headers.append("Accept", "application/vnd.github.v3+json");
+      if (status === "authenticated") {
+        headers.append("Authorization", `Bearer ${session?.access_token}`);
+      }
+      headers.append("Content-Type", "application/json");
+
+      let bodyData = JSON.stringify({
+        "title": title,
+        "body": taskBody,
+        //"state": open或close
+        //"label": 各種
+      });
+
+      let config = {
+        method: 'PATCH',
+        headers: headers,
+        body: bodyData,
+        //redirect: 'follow'
+      };
+
+      fetch(apiUri, config)
+        .then(res => res.json())
+        //.then(result => console.log("result", result))
+        .catch(error => console.log('error', error));
+
+      toast.success('Task update successfully');
+
+    }
+  }
+
+  const handleDelete = () => {
+    if (task !== undefined) {
+      dispatch(deleteTask(task.id));
+      toast.success('Task Deleted Successfully');
+    } else {
+      toast.error('Delete Failed');
+      return;
+    }
+    if (task) {
+      const apiUri = `https://api.github.com/repos/70928manson/Github-issues-tracker/issues/${task.number}`;
+      const headers = new Headers();
+      headers.append("Accept", "application/vnd.github.v3+json");
+      if (status === "authenticated") {
+        headers.append("Authorization", `Bearer ${session?.access_token}`);
+      }
+      headers.append("Content-Type", "application/json");
+
+      let bodyData = JSON.stringify({
+        "state": "closed"
+        //"label": 各種
+      });
+
+      let config = {
+        method: 'PATCH',
+        headers: headers,
+        body: bodyData,
+        //redirect: 'follow'
+      };
+
+      fetch(apiUri, config)
+        .then(res => res.json())
+        .then(result => console.log("result", result))
+        .catch(error => console.log('error', error));
+
+      toast.success('Task update successfully');
+    }
+  }
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -73,61 +202,16 @@ const TaskModal: React.FC<ITaskModalProps> = ({ type, modalOpen, setModalOpen, t
       toast.error('Please enter a title');
       return;
     }
+
     if (title && label) {
       if (type === 'add') {
-        dispatch(
-          addTask({
-            id: uuid(),
-            title,
-            label,
-            time: new Date(),
-          })
-        );
-        const apiUri = `https://api.github.com/repos/70928manson/Github-issues-tracker/issues`;
-        const headers = new Headers();
-        headers.append("Accept", "application/vnd.github.v3+json");
-        if (status === "authenticated") {
-          headers.append("Authorization", `Bearer ${session?.access_token}`);
-        }
-        headers.append("Content-Type", "application/json");
-
-        let data = JSON.stringify({
-          "title": title,
-          "body": taskBody,
-        });
-
-        let config = {
-          method: 'POST',
-          headers: headers,
-          body: data,
-          //redirect: 'follow'
-        };
-
-        fetch(apiUri, config)
-          .then(res => res.json())
-          .then(result => console.log("123", result))
-          .catch(error => console.log('error', error));
-
-        toast.success('Task added successfully');
+        handleAdd();
       }
       if (type === 'update') {
-        if (task) {
-          if (task.title !== title || task.status !== label) {
-            dispatch(updateTask({ ...task, title, label }));
-            toast.success('Task Updated successfully');
-          } else {
-            toast.error('No changes made');
-            return;
-          }
-        }
+        handleUpdate();
       }
       if (type === 'delete') {
-        if (task !== undefined) {
-          dispatch(deleteTask(task.id));
-          toast.success('Task Deleted Successfully');
-        } else {
-          alert("刪除失敗");
-        }
+        handleDelete();
       }
 
       let tempModalOpen = { ...(modalOpen) };
@@ -212,8 +296,8 @@ const TaskModal: React.FC<ITaskModalProps> = ({ type, modalOpen, setModalOpen, t
                   className="mt-2 mb-8 w-full p-4 border-none bg-white text-[1.6rem]"
                   disabled={type === "delete" ? true : false}
                 >
-                  <option value="incomplete">Incomplete</option>
-                  <option value="complete">Completed</option>
+                  <option value="In Progress">In Progress</option>
+                  <option value="Done">Done</option>
                 </select>
               </label>
               <div className="flex justify-end items-center mt-8 gap-4">

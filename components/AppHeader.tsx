@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Button, { SelectButton } from './Button';
 import TaskModal from './TaskModal';
-import { updateFilterStatus } from '../Redux/slices/taskSlice';
+import { updateFilterLabel } from '../Redux/slices/taskSlice';
 
 import { useAppDispatch, useAppSelector } from '@/Redux/hooks';
 
@@ -15,13 +15,13 @@ const AppHeader:React.FC = () => {
     update: false,
     delete: false,
   } as IModalOpen);
-  const initialFilterStatus = useAppSelector((state) => state.task.filterStatus);
-  const [filterStatus, setFilterStatus] = useState(initialFilterStatus);
+  const initialFilterLabel = useAppSelector((state) => state.task.filterLabel);
+  const [filterLabel, setFilterLabel] = useState(initialFilterLabel);
   const dispatch = useAppDispatch();
 
   const updateFilter = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setFilterStatus(e.target.value);
-    dispatch(updateFilterStatus(e.target.value));
+    setFilterLabel(e.target.value);
+    dispatch(updateFilterLabel(e.target.value));
   };
 
   return (
@@ -36,11 +36,11 @@ const AppHeader:React.FC = () => {
       <SelectButton
         id="status"
         onChange={(e: React.ChangeEvent<HTMLSelectElement>) => updateFilter(e)}
-        value={filterStatus}
+        value={filterLabel}
       >
-        <option value="all">All</option>
-        <option value="incomplete">Incomplete</option>
-        <option value="complete">Completed</option>
+        <option value="Open">Open</option>
+        <option value="In Progress">In Progress</option>
+        <option value="Done">Done</option>
       </SelectButton>
       <TaskModal type="add" modalOpen={modalOpen} setModalOpen={setModalOpen} modalTitle="Add Task" />
     </div>

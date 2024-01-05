@@ -34,7 +34,7 @@ const TaskItem: React.FC<ITaskItemProps> = ({ task }) => {
   })
 
   useEffect(() => {
-    if (task.status === 'complete') {
+    if (task.status === 'Done') {
       setChecked(true);
     } else {
       setChecked(false);
@@ -42,9 +42,9 @@ const TaskItem: React.FC<ITaskItemProps> = ({ task }) => {
   }, [task.status]);
 
   const handleCheck = () => {
-    setChecked(!checked);
+    setChecked(!checked);    
     dispatch(
-      updateTask({ ...task, status: checked ? 'incomplete' : 'complete' })
+      updateTask({ ...task, status: checked ? 'In Progress' : 'Done' })
     );
   };
 
@@ -68,12 +68,15 @@ const TaskItem: React.FC<ITaskItemProps> = ({ task }) => {
           <CheckButton checked={checked} handleCheck={handleCheck} />
           <div className="flex flex-col overflow-hidden">
             <p
-            className={`todoText ${task.status === "complete" && 'todoText--completed' }`}
+            className={`todoText ${task.status === "Done" && 'todoText--completed' }`}
             >
               {task.title}
             </p>
+            <div>
+              <p className="block text-[1.5rem] font-light mt-[-0.2rem] text-black-2 pb-2">{`body: ${task.body}`}</p>
+            </div>
             <p className="block text-[1.2rem] font-light mt-[-0.2rem] text-black-2">
-              { format(new Date(task.time), 'p, MM/dd/yyyy')}
+              { format(new Date(task.time), 'p, MM/dd/yyyy') }
             </p>
           </div>
         </div>
