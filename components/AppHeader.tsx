@@ -2,12 +2,12 @@
 
 import React, { useState } from 'react';
 import Button, { SelectButton } from './Button';
-import TaskModal from './TaskModal';
-import { updateFilterLabel } from '../Redux/slices/taskSlice';
+import IssueModal from './IssueModal';
+import { updateFilterLabel } from '../Redux/slices/issueSlice';
 
 import { useAppDispatch, useAppSelector } from '@/Redux/hooks';
 
-import { IModalOpen } from '@/types/components/taskModal';
+import { IModalOpen } from '@/types/components/issueModalOpen';
 
 const AppHeader:React.FC = () => {
   const [modalOpen, setModalOpen] = useState({
@@ -15,7 +15,7 @@ const AppHeader:React.FC = () => {
     update: false,
     delete: false,
   } as IModalOpen);
-  const initialFilterLabel = useAppSelector((state) => state.task.filterLabel);
+  const initialFilterLabel = useAppSelector((state) => state.issue.filterLabel);
   const [filterLabel, setFilterLabel] = useState(initialFilterLabel);
   const dispatch = useAppDispatch();
 
@@ -31,7 +31,7 @@ const AppHeader:React.FC = () => {
           ...modalOpen, add: true
         })
       }}>
-        Add Task
+        Add Issue
       </Button>
       <SelectButton
         id="status"
@@ -42,7 +42,7 @@ const AppHeader:React.FC = () => {
         <option value="In Progress">In Progress</option>
         <option value="Done">Done</option>
       </SelectButton>
-      <TaskModal type="add" modalOpen={modalOpen} setModalOpen={setModalOpen} modalTitle="Add Task" />
+      <IssueModal type="add" modalOpen={modalOpen} setModalOpen={setModalOpen} modalTitle="Add Issue" />
     </div>
   );
 }

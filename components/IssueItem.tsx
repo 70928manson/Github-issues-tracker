@@ -3,17 +3,17 @@ import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
 import React, { useEffect, useState } from 'react';
 import { MdDelete, MdEdit } from 'react-icons/md';
-import { updateTask } from '../Redux/slices/taskSlice';
+import { updateIssue } from '../Redux/slices/issueSlice';
 import CheckButton from './CheckButton';
-import TaskModal from './TaskModal';
+import IssueModal from './IssueModal';
 
-import { ITask } from '../Redux/slices/taskSlice';
+import { IIssue } from '../Redux/slices/issueSlice';
 
-import '../styles/components/taskItem.css';
+import '../styles/components/issueItem.css';
 import { useAppDispatch } from '@/Redux/hooks';
 
-interface ITaskItemProps {
-  task: ITask;
+interface IIssueItemProps {
+  issue: IIssue;
 }
 
 const child = {
@@ -24,7 +24,7 @@ const child = {
   },
 };
 
-const TaskItem: React.FC<ITaskItemProps> = ({ task }) => {
+const IssueItem: React.FC<IIssueItemProps> = ({ issue }) => {
   const dispatch = useAppDispatch();
   const [checked, setChecked] = useState(false);
   const [modalOpen, setModalOpen] = useState({
@@ -34,17 +34,17 @@ const TaskItem: React.FC<ITaskItemProps> = ({ task }) => {
   })
 
   useEffect(() => {
-    if (task.status === 'Done') {
+    if (issue.status === 'Done') {
       setChecked(true);
     } else {
       setChecked(false);
     }
-  }, [task.status]);
+  }, [issue.status]);
 
   const handleCheck = () => {
     setChecked(!checked);    
     dispatch(
-      updateTask({ ...task, status: checked ? 'In Progress' : 'Done' })
+      updateIssue({ ...issue, status: checked ? 'In Progress' : 'Done' })
     );
   };
 
@@ -52,7 +52,7 @@ const TaskItem: React.FC<ITaskItemProps> = ({ task }) => {
     setModalOpen({
       ...modalOpen, delete: true
     })
-    toast.success('Task Deleted Successfully');
+    toast.success('Issue Deleted Successfully');
   };
 
   const handleUpdate = () => {
@@ -68,15 +68,15 @@ const TaskItem: React.FC<ITaskItemProps> = ({ task }) => {
           <CheckButton checked={checked} handleCheck={handleCheck} />
           <div className="flex flex-col overflow-hidden">
             <p
-            className={`todoText ${task.status === "Done" && 'todoText--completed' }`}
+            className={`todoText ${issue.status === "Done" && 'todoText--completed' }`}
             >
-              {task.title}
+              {issue.title}
             </p>
             <div>
-              <p className="block text-[1.5rem] font-light mt-[-0.2rem] text-black-2 pb-2">{`body: ${task.body}`}</p>
+              <p className="block text-[1.5rem] font-light mt-[-0.2rem] text-black-2 pb-2">{`body: ${issue.body}`}</p>
             </div>
             <p className="block text-[1.2rem] font-light mt-[-0.2rem] text-black-2">
-              { format(new Date(task.time), 'p, MM/dd/yyyy') }
+              { format(new Date(issue.time), 'p, MM/dd/yyyy') }
             </p>
           </div>
         </div>
@@ -103,22 +103,22 @@ const TaskItem: React.FC<ITaskItemProps> = ({ task }) => {
           </div>
         </div>
       </motion.div>
-      <TaskModal
+      <IssueModal
         type="update"
         modalOpen={modalOpen}
         setModalOpen={setModalOpen}
-        task={task}
-        modalTitle="Update Task"
+        issue={issue}
+        modalTitle="Update Issue"
       />
-      <TaskModal
+      <IssueModal
         type="delete"
         modalOpen={modalOpen}
         setModalOpen={setModalOpen}
-        task={task}
-        modalTitle="Delete Task"
+        issue={issue}
+        modalTitle="Delete Issue"
       />
     </>
   );
 }
 
-export default TaskItem;
+export default IssueItem;

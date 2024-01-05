@@ -1,11 +1,11 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { ITask } from '../slices/taskSlice';
+import { IIssue } from '../slices/issueSlice';
 
-export const taskApiService = createApi({
-  reducerPath: 'taskApi',
+export const issueApiService = createApi({
+  reducerPath: 'issueApi',
   baseQuery: fetchBaseQuery({ baseUrl: 'https://api.github.com/repos/70928manson/Github-issues-tracker' }),
   endpoints: (builder) => ({
-    getTaskList: builder.query<ITask[], number | "all">({
+    getIssueList: builder.query<IIssue[], number | "all">({
       query: (id) => {
         if (id !== "all") {
           return `issues/${id}`
@@ -16,4 +16,4 @@ export const taskApiService = createApi({
   }),
 })
 
-export const { useGetTaskListQuery } = taskApiService
+export const { useGetIssueListQuery } = issueApiService

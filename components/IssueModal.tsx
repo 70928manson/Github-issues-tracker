@@ -5,19 +5,19 @@ import { v4 as uuid } from 'uuid';
 import { MdOutlineClose } from 'react-icons/md';
 import { AnimatePresence, motion } from 'framer-motion';
 import toast from 'react-hot-toast';
-import { ITask, addTask, deleteTask, updateTask } from '../Redux/slices/taskSlice';
+import { IIssue, addIssue, deleteIssue, updateIssue } from '../Redux/slices/issueSlice';
 import Button from './Button';
 import { useAppDispatch, useAppSelector } from '@/Redux/hooks';
-import { IModalOpen } from '@/types/components/taskModal';
+import { IModalOpen } from '@/types/components/issueModalOpen';
 
 import { useSession } from 'next-auth/react';
-import { useGetTaskListQuery } from '@/Redux/services/taskApi';
+import { useGetIssueListQuery } from '@/Redux/services/issueApi';
 
-interface ITaskModalProps {
+interface IIssueModalProps {
   type: string;
   modalOpen: IModalOpen;
   setModalOpen: React.Dispatch<React.SetStateAction<IModalOpen>>;
-  task?: ITask;
+  issue?: IIssue;
   modalTitle: string;
 }
 
@@ -49,43 +49,43 @@ const dropIn = {
   },
 };
 
-const TaskModal: React.FC<ITaskModalProps> = ({ type, modalOpen, setModalOpen, task, modalTitle }) => {
+const IssueModal: React.FC<IIssueModalProps> = ({ type, modalOpen, setModalOpen, issue, modalTitle }) => {
   const dispatch = useAppDispatch();
   const [title, setTitle] = useState('');
-  const [taskBody, setTaskBody] = useState('');
+  const [issueBody, setIssueBody] = useState('');
   const [label, setLabel] = useState('In Progress');
 
-  const taskList = useAppSelector((state) => state.task.taskList);
+  const issueList = useAppSelector((state) => state.issue.issueList);
 
   //data重新命名為session
   const { data: session, status } = useSession();
   
   useEffect(() => {
-    if ((type === 'update' || type === 'delete') && task) {
-      setTitle(task.title);
-      setTaskBody(task.body);
-      if (task.status === undefined) {
+    if ((type === 'update' || type === 'delete') && issue) {
+      setTitle(issue.title);
+      setIssueBody(issue.body);
+      if (issue.status === undefined) {
         setLabel('In Progress')
       } else {
-        setLabel(task.status);
+        setLabel(issue.status);
       }
     } else {
       setTitle('');
-      setTaskBody('');
+      setIssueBody('');
       setLabel('In Progress');
     }
-  }, [type, task, modalOpen]);
+  }, [type, issue, modalOpen]);
 
   const handleAdd = () => {
     dispatch(
-      addTask({
+      addIssue({
         id: uuid(),
         title,
-        body: taskBody,
+        body: issueBody,
         label,
         time: Date(),
         created_at: Date(),
-        number: taskList.length + 1
+        number: issueList.length + 1
       })
     );
 
@@ -99,7 +99,7 @@ const TaskModal: React.FC<ITaskModalProps> = ({ type, modalOpen, setModalOpen, t
 
     let bodyData = JSON.stringify({
       "title": title,
-      "body": taskBody,
+      "body": issueBody,
     });
 
     let config = {
@@ -114,19 +114,19 @@ const TaskModal: React.FC<ITaskModalProps> = ({ type, modalOpen, setModalOpen, t
       //.then(result => console.log("result", result))
       .catch(error => console.log('error', error));
 
-    toast.success('Task added successfully');
+    toast.success('Issue added successfully');
   }
 
   const handleUpdate = () => {
-    if (task) {
-      if (task.title !== title || task.body !== taskBody || task.status !== label) {
-        dispatch(updateTask({ ...task, title, body: taskBody, label }));
-        //toast.success('Task Updated successfully');
+    if (issue) {
+      if (issue.title !== title || issue.body !== issueBody || issue.status !== label) {
+        dispatch(updateIssue({ ...issue, title, body: issueBody, label }));
+        //toast.success('Issue Updated successfully');
       } else {
         toast.error('No changes made');
         return;
       }
-      const apiUri = `https://api.github.com/repos/70928manson/Github-issues-tracker/issues/${task.number}`;
+      const apiUri = `https://api.github.com/repos/70928manson/Github-issues-tracker/issues/${issue.number}`;
       const headers = new Headers();
       headers.append("Accept", "application/vnd.github.v3+json");
       if (status === "authenticated") {
@@ -136,7 +136,7 @@ const TaskModal: React.FC<ITaskModalProps> = ({ type, modalOpen, setModalOpen, t
 
       let bodyData = JSON.stringify({
         "title": title,
-        "body": taskBody,
+        "body": issueBody,
         //"state": open或close
         //"label": 各種
       });
@@ -153,21 +153,21 @@ const TaskModal: React.FC<ITaskModalProps> = ({ type, modalOpen, setModalOpen, t
         //.then(result => console.log("result", result))
         .catch(error => console.log('error', error));
 
-      toast.success('Task update successfully');
+      toast.success('Issue update successfully');
 
     }
   }
 
   const handleDelete = () => {
-    if (task !== undefined) {
-      dispatch(deleteTask(task.id));
-      toast.success('Task Deleted Successfully');
+    if (issue !== undefined) {
+      dispatch(deleteIssue(issue.id));
+      toast.success('Issue Deleted Successfully');
     } else {
       toast.error('Delete Failed');
       return;
     }
-    if (task) {
-      const apiUri = `https://api.github.com/repos/70928manson/Github-issues-tracker/issues/${task.number}`;
+    if (issue) {
+      const apiUri = `https://api.github.com/repos/70928manson/Github-issues-tracker/issues/${issue.number}`;
       const headers = new Headers();
       headers.append("Accept", "application/vnd.github.v3+json");
       if (status === "authenticated") {
@@ -189,10 +189,10 @@ const TaskModal: React.FC<ITaskModalProps> = ({ type, modalOpen, setModalOpen, t
 
       fetch(apiUri, config)
         .then(res => res.json())
-        .then(result => console.log("result", result))
+        //.then(result => console.log("result", result))
         .catch(error => console.log('error', error));
 
-      toast.success('Task update successfully');
+      toast.success('Issue update successfully');
     }
   }
 
@@ -281,8 +281,8 @@ const TaskModal: React.FC<ITaskModalProps> = ({ type, modalOpen, setModalOpen, t
                 <textarea
                   //type="text"
                   id="body"
-                  value={taskBody}
-                  onChange={(e) => setTaskBody(e.target.value)}
+                  value={issueBody}
+                  onChange={(e) => setIssueBody(e.target.value)}
                   className="mt-2 mb-8 w-full p-4 border-none bg-white text-[1.6rem]"
                   disabled={type === "delete" ? true : false}
                 />
@@ -320,4 +320,4 @@ const TaskModal: React.FC<ITaskModalProps> = ({ type, modalOpen, setModalOpen, t
   );
 }
 
-export default TaskModal;
+export default IssueModal;

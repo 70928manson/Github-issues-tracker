@@ -6,7 +6,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 
 import LoginButton from './LoginButton';
 
-interface ITaskModalProps {
+interface IIssueModalProps {
     type: string;
     modalOpen: boolean;
     setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -34,7 +34,7 @@ const dropIn = {
     },
 };
 
-const LoginModal: React.FC<ITaskModalProps> = ({ type, modalOpen, setModalOpen, modalTitle }) => {
+const LoginModal: React.FC<IIssueModalProps> = ({ type, modalOpen, setModalOpen, modalTitle }) => {
 
     return (
         <AnimatePresence>

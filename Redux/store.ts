@@ -1,12 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { combineReducers } from '@reduxjs/toolkit';
 
-import taskReducer from './slices/taskSlice';
-import { taskApiService } from './services/taskApi';
+import issueReducer from './slices/issueSlice';
+import { issueApiService } from './services/issueApi';
 
 const reducers = combineReducers({
-    task: taskReducer,
-    [taskApiService.reducerPath]: taskApiService.reducer
+    issue: issueReducer,
+    [issueApiService.reducerPath]: issueApiService.reducer
 })
 
 export const store = configureStore({
@@ -15,7 +15,7 @@ export const store = configureStore({
     return getCurrentMiddlewares()
     //   .concat(loggerMiddlware)
     //   .concat(mansonMiddlware)
-      .concat(taskApiService.middleware)
+      .concat(issueApiService.middleware)
     }
 })
 

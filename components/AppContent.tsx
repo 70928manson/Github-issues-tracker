@@ -2,10 +2,10 @@
 
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { useEffect } from 'react';
-import TaskItem from './TaskItem';
-import { ITask, initTask } from '@/Redux/slices/taskSlice';
+import IssueItem from './IssueItem';
+import { IIssue, initIssue } from '@/Redux/slices/issueSlice';
 import { useAppDispatch, useAppSelector } from '@/Redux/hooks';
-import { useGetTaskListQuery } from '@/Redux/services/taskApi';
+import { useGetIssueListQuery } from '@/Redux/services/issueApi';
 
 const container = {
   hidden: { opacity: 1 },
@@ -26,15 +26,15 @@ const child = {
 };
 
 const AppContent: React.FC = () => {
-  const taskList = useAppSelector((state) => state.task.taskList);
-  const filterLabel = useAppSelector((state) => state.task.filterLabel);
+  const issueList = useAppSelector((state) => state.issue.issueList);
+  const filterLabel = useAppSelector((state) => state.issue.filterLabel);
 
-  const { data } = useGetTaskListQuery("all");
+  const { data } = useGetIssueListQuery("all");
 
   let handleData: any[] = [];
 
   if (data !== undefined) {
-    handleData = taskList.map((issue: any) => {
+    handleData = issueList.map((issue: any) => {
 
       return {
         completed: false,
@@ -53,12 +53,12 @@ const AppContent: React.FC = () => {
   }
 
   //時間 
-  const sortedTaskList = [...handleData];
-  sortedTaskList.sort((a: ITask, b: ITask) => new Date(b.time).getTime() - new Date(a.time).getTime());   //大到小
-  //sortedTaskList.sort((a: ITask, b: ITask) => new Date(a.time).getTime() - new Date(b.time).getTime()); ////小到大
+  const sortedIssueList = [...handleData];
+  sortedIssueList.sort((a: IIssue, b: IIssue) => new Date(b.time).getTime() - new Date(a.time).getTime());   //大到小
+  //sortedIssueList.sort((a: IIssue, b: IIssue) => new Date(a.time).getTime() - new Date(b.time).getTime()); ////小到大
 
   //標籤
-  const filteredTaskList = sortedTaskList.filter((item) => {
+  const filteredIssueList = sortedIssueList.filter((item) => {
     if (filterLabel === 'Open') {
       return true;
     }
@@ -76,13 +76,13 @@ const AppContent: React.FC = () => {
       animate="visible"
     >
       <AnimatePresence>
-        {filteredTaskList && filteredTaskList.length > 0 ? (
-          filteredTaskList.map((task) => (
-            <TaskItem key={task.id} task={task} />
+        {filteredIssueList && filteredIssueList.length > 0 ? (
+          filteredIssueList.map((issue) => (
+            <IssueItem key={issue.id} issue={issue} />
           ))
         ) : (
           <motion.p variants={child} className="text-[1.6rem] font-medium text-black-2 text-center mx-auto py-2 px-4 rounded-lg bg-gray-2">
-            No Tasks
+            No Issues
           </motion.p>
         )}
       </AnimatePresence>
