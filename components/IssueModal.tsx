@@ -137,8 +137,7 @@ const IssueModal: React.FC<IIssueModalProps> = ({ type, modalOpen, setModalOpen,
       let bodyData = JSON.stringify({
         "title": title,
         "body": issueBody,
-        //"state": open或close
-        //"label": 各種
+        "labels": [`${label}`]
       });
 
       let config = {

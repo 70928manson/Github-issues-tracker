@@ -44,6 +44,7 @@ export const issueSlice = createSlice({
                     issue.status = action.payload.status;
                     issue.title = action.payload.title;
                     issue.body = action.payload.body;
+                    issue.status = action.payload.label
                 }
             });
         },
