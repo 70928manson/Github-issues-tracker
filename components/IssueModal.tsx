@@ -83,6 +83,7 @@ const IssueModal: React.FC<IIssueModalProps> = ({ type, modalOpen, setModalOpen,
         title,
         body: issueBody,
         label,
+        status: "In Progress",
         time: Date(),
         created_at: Date(),
         number: issueList.length + 1
