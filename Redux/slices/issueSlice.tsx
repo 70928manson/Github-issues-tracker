@@ -43,7 +43,7 @@ export const issueSlice = createSlice({
                 if (issue.id === action.payload.id) {
                     issue.status = action.payload.status;
                     issue.title = action.payload.title;
-                    issue.body = action.payload.body
+                    issue.body = action.payload.body;
                 }
             });
         },
