@@ -48,7 +48,7 @@ const IssueItem: React.FC<IIssueItemProps> = ({ issue }) => {
   const handleCheck = () => {
     setChecked(!checked);    
     dispatch(
-      updateIssue({ ...issue, status: checked ? 'In Progress' : 'Done' })
+      updateIssue({ ...issue, status: checked ? 'In Progress' : 'Done', label: checked ? 'In Progress' : 'Done' })
     );
 
     const apiUri = `https://api.github.com/repos/70928manson/Github-issues-tracker/issues/${issue.number}`;
