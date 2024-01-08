@@ -111,7 +111,7 @@ const IssueModal: React.FC<IIssueModalProps> = ({ type, modalOpen, setModalOpen,
 
     fetch(apiUri, config)
       .then(res => res.json())
-      //.then(result => console.log("result", result))
+      .then(result => console.log("result", result))
       .catch(error => console.log('error', error));
 
     toast.success('Issue added successfully');
