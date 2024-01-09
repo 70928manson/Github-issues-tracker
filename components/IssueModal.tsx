@@ -177,14 +177,12 @@ const IssueModal: React.FC<IIssueModalProps> = ({ type, modalOpen, setModalOpen,
 
       let bodyData = JSON.stringify({
         "state": "closed"
-        //"label": 各種
       });
 
       let config = {
         method: 'PATCH',
         headers: headers,
         body: bodyData,
-        //redirect: 'follow'
       };
 
       fetch(apiUri, config)
@@ -198,22 +196,35 @@ const IssueModal: React.FC<IIssueModalProps> = ({ type, modalOpen, setModalOpen,
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    let errStrArr: string[] = [];
+    
     if (title === '') {
-      toast.error('Please enter a title');
+      errStrArr.push("Title is required!");
+    }
+    if (issueBody.length < 30) {
+      errStrArr.push("Body need at least 30!");
+    }
+
+    const errorMsgs = errStrArr.map((msg, index) => <p key={`${msg}${index}`}>{msg}</p>);
+    
+    if (errorMsgs.length > 0) {
+      toast.error(<div>{errorMsgs}</div>);
       return;
     }
 
     if (title && label) {
-      if (type === 'add') {
-        handleAdd();
+      switch (type) {
+        case 'add':
+          handleAdd();
+          break;
+        case 'update':
+          handleUpdate();
+        case 'delete':
+          handleDelete();
+        default:
+          console.log("no such type in switch case", type)
       }
-      if (type === 'update') {
-        handleUpdate();
-      }
-      if (type === 'delete') {
-        handleDelete();
-      }
-
       let tempModalOpen = { ...(modalOpen) };
       tempModalOpen[`${(type as "add" | "update" | "delete")}`] = false;
       setModalOpen(tempModalOpen)
@@ -266,7 +277,7 @@ const IssueModal: React.FC<IIssueModalProps> = ({ type, modalOpen, setModalOpen,
                 {modalTitle}
               </h1>
               <label htmlFor="title" className="text-[1.6rem] text-black-1">
-                Title
+                Title*
                 <input
                   type="text"
                   id="title"
@@ -277,7 +288,7 @@ const IssueModal: React.FC<IIssueModalProps> = ({ type, modalOpen, setModalOpen,
                 />
               </label>
               <label htmlFor="title" className="text-[1.6rem] text-black-1">
-                Body
+                Body <span>{issueBody.length} / 30</span>
                 <textarea
                   //type="text"
                   id="body"
