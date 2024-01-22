@@ -90,7 +90,6 @@ const Navbar: React.FC = () => {
             </div>
           </div>
           <div className="flex gap-4">
-            <p onClick={() => signIn("github")}>yo</p>
             <Button type="login" variant="primary" onClick={handleLogin}>
               <span>Log In</span>
             </Button>
