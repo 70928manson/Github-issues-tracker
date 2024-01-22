@@ -54,7 +54,7 @@ const Navbar: React.FC = () => {
       .then(result => dispatch(initIssue(result.items)))
       .catch(error => console.log('error', error));
 
-    toast.success('Issue update successfully');
+    toast.success('Issue search successfully');
     setKeyword("");
   }
   

@@ -190,7 +190,7 @@ const IssueModal: React.FC<IIssueModalProps> = ({ type, modalOpen, setModalOpen,
         //.then(result => console.log("result", result))
         .catch(error => console.log('error', error));
 
-      toast.success('Issue update successfully');
+      toast.success('Issue delete successfully');
     }
   }
 

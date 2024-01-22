@@ -75,7 +75,7 @@ const IssueItem: React.FC<IIssueItemProps> = ({ issue }) => {
       .then(result => console.log("result", result))
       .catch(error => console.log('error', error));
 
-    toast.success('Issue update successfully');
+    toast.success('Issue change status successfully');
   };
 
   const handleDelete = () => {
