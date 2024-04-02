@@ -202,8 +202,8 @@ const IssueModal: React.FC<IIssueModalProps> = ({ type, modalOpen, setModalOpen,
     if (title === '') {
       errStrArr.push("Title is required!");
     }
-    if (issueBody.length < 30) {
-      errStrArr.push("Body need at least 30!");
+    if (issueBody.length > 30) {
+      errStrArr.push("Body need less than 30!");
     }
 
     const errorMsgs = errStrArr.map((msg, index) => <p key={`${msg}${index}`}>{msg}</p>);
