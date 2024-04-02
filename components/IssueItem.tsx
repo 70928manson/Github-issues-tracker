@@ -94,7 +94,7 @@ const IssueItem: React.FC<IIssueItemProps> = ({ issue }) => {
   return (
     <>
       <motion.div className="flex items-center justify-between p-4 bg-white mb-6 rounded last:mb-0" variants={child}>
-        <div className="flex items-center justify-start gap-4">
+        <div className="flex items-center justify-start gap-4 max-w-[35%]">
           <CheckButton checked={checked} handleCheck={handleCheck} />
           <div className="flex flex-col overflow-hidden">
             <p
@@ -103,7 +103,7 @@ const IssueItem: React.FC<IIssueItemProps> = ({ issue }) => {
               {issue.title}
             </p>
             <div>
-              <p className="block text-[1.5rem] font-light mt-[-0.2rem] text-black-2 pb-2">{`body: ${issue.body}`}</p>
+              <p className="block text-[1.5rem] font-light mt-[-0.2rem] text-black-2 pb-2 overflow-hidden whitespace-nowrap text-ellipsis">{`body: ${issue.body}`}</p>
             </div>
             <div>
               <p className="block text-[1.5rem] font-light mt-[-0.2rem] text-black-2 pb-2">{`label to status: ${issue.status}`}</p>
